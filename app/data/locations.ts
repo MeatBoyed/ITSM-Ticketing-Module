@@ -1,0 +1,68 @@
+import type { Location } from "@/types/ticket"
+
+export const locations: Location[] = [
+  {
+    id: "LOC-001",
+    name: "Headquarters",
+    address: "123 Main Street",
+    city: "San Francisco",
+    state: "CA",
+    zip: "94105",
+  },
+  {
+    id: "LOC-002",
+    name: "East Coast Office",
+    address: "456 Park Avenue",
+    city: "New York",
+    state: "NY",
+    zip: "10022",
+  },
+  {
+    id: "LOC-003",
+    name: "Midwest Branch",
+    address: "789 Michigan Avenue",
+    city: "Chicago",
+    state: "IL",
+    zip: "60611",
+  },
+  {
+    id: "LOC-004",
+    name: "Southern Office",
+    address: "101 Peachtree Street",
+    city: "Atlanta",
+    state: "GA",
+    zip: "30303",
+  },
+  {
+    id: "LOC-005",
+    name: "West Coast Lab",
+    address: "202 Tech Drive",
+    city: "Seattle",
+    state: "WA",
+    zip: "98101",
+  },
+  {
+    id: "LOC-006",
+    name: "Remote Data Center",
+    address: "303 Server Lane",
+    city: "Austin",
+    state: "TX",
+    zip: "78701",
+  },
+  {
+    id: "LOC-007",
+    name: "Manufacturing Plant",
+    address: "404 Industrial Blvd",
+    city: "Detroit",
+    state: "MI",
+    zip: "48226",
+  },
+  {
+    id: "LOC-008",
+    name: "Research Facility",
+    address: "505 Innovation Way",
+    city: "Boston",
+    state: "MA",
+    zip: "02110",
+  },
+]
