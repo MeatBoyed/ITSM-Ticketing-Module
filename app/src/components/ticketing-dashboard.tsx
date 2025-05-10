@@ -62,7 +62,7 @@ export function TicketingDashboard() {
         <DashboardStats tickets={tickets} />
 
         <div className="mt-8 grid grid-cols-1 lg:grid-cols-12 gap-6">
-          <div className="lg:col-span-4 xl:col-span-3 space-y-6">
+          <div className="lg:col-span-5 xl:col-span-3 space-y-6">
             <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
               <Tabs defaultValue="all" value={activeTab} onValueChange={setActiveTab}>
                 <div className="px-4 pt-4">
@@ -128,7 +128,7 @@ export function TicketingDashboard() {
             </div>
           </div>
 
-          <div className="lg:col-span-8 xl:col-span-9">
+          <div className="lg:col-span-7 xl:col-span-9">
             <div className="bg-white rounded-lg shadow-sm border border-gray-100 h-full">
               {selectedTicket ? (
                 <TicketDetails ticket={selectedTicket} onUpdateTicket={handleUpdateTicket} />

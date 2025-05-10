@@ -291,7 +291,8 @@ export function TicketDetails({ ticket, onUpdateTicket }: TicketDetailsProps) {
   }
 
   return (
-    <div className="h-[700px] flex flex-col">
+    // <div className="h-[700px] flex flex-col">
+    <div className="flex flex-col">
       {/* Header */}
       <div className="p-6 border-b border-gray-100">
         <div className="flex justify-between items-start">

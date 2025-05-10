@@ -8,7 +8,7 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { formatDistanceToNow } from "@/lib/utils"
 import { getStatusColor } from "@/lib/colors"
 import { Search, Filter } from "lucide-react"
-import type { Ticket } from "@/types/ticket"
+import type { Ticket } from "../../types/ticket"
 import { useState } from "react"
 
 interface TicketListProps {
@@ -62,10 +62,9 @@ export function TicketList({ tickets, selectedTicketId, onSelectTicket }: Ticket
                 key={ticket.id}
                 className={`
                   p-3 rounded-lg border cursor-pointer transition-all
-                  ${
-                    selectedTicketId === ticket.id
-                      ? "bg-primary/5 border-primary/30"
-                      : "bg-white hover:bg-gray-50 border-gray-100"
+                  ${selectedTicketId === ticket.id
+                    ? "bg-primary/5 border-primary/30"
+                    : "bg-white hover:bg-gray-50 border-gray-100"
                   }
                 `}
                 onClick={() => onSelectTicket(ticket)}
@@ -89,13 +88,13 @@ export function TicketList({ tickets, selectedTicketId, onSelectTicket }: Ticket
                       <span>{formatDistanceToNow(ticket.createdAt)}</span>
                     </div>
                   </div>
-                  <Avatar className="h-8 w-8 flex-shrink-0">
+                  {/* <Avatar className="h-8 w-8 flex-shrink-0">
                     <AvatarImage
                       src={ticket.assignedAgent.avatar || "/placeholder.svg"}
                       alt={ticket.assignedAgent.name}
                     />
                     <AvatarFallback>{ticket.assignedAgent.name.charAt(0)}</AvatarFallback>
-                  </Avatar>
+                  </Avatar> */}
                 </div>
                 <div className="mt-2 flex items-center text-xs">
                   <Avatar className="h-5 w-5 mr-1">
