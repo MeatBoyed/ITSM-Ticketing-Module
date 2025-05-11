@@ -1,12 +1,14 @@
 import { Card, CardContent } from "@/components/ui/card"
 import { Clock, AlertTriangle, CheckCircle, BarChart3 } from "lucide-react"
 import type { Ticket } from "@/types/ticket"
+import { useTicketContext } from "@/contexts/TicketContext"
 
 interface DashboardStatsProps {
   tickets: Ticket[]
 }
 
-export function DashboardStats({ tickets }: DashboardStatsProps) {
+export function DashboardStats() {
+  const { tickets } = useTicketContext()
   // Calculate stats
   const openTickets = tickets.filter((t) => t.status === "Open").length
   const urgentTickets = tickets.filter((t) => t.priority === "Urgent").length

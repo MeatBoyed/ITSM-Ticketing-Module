@@ -27,7 +27,7 @@ export function TicketingDashboard() {
 
   return (
     <>
-      <DashboardStats tickets={tickets} />
+      <DashboardStats />
 
       <div className="mt-8 grid grid-cols-1 lg:grid-cols-12 gap-6">
         <div className="lg:col-span-5 xl:col-span-3 space-y-6">
