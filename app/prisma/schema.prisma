@@ -1,0 +1,112 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model activities {
+  id          Int           @id @default(autoincrement())
+  type        activity_type
+  created_at  DateTime      @default(now()) @db.Timestamptz(6)
+  description String
+  note        String?
+  ticket_id   Int
+  user_id     Int
+  tickets     tickets       @relation(fields: [ticket_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users       users         @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model customers {
+  id      Int       @id @default(autoincrement())
+  name    String
+  email   String    @unique
+  phone   String?
+  tickets tickets[]
+}
+
+model team_members {
+  user_id Int
+  team_id Int
+  teams   teams @relation(fields: [team_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  users   users @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([user_id, team_id])
+}
+
+model teams {
+  id           Int            @id @default(autoincrement())
+  name         String         @unique @db.VarChar(100)
+  team_members team_members[]
+}
+
+model tickets {
+  id                                          Int             @id @default(autoincrement())
+  title                                       String
+  description                                 String
+  status                                      ticket_status
+  priority                                    ticket_priority
+  category                                    String
+  team                                        String
+  created_at                                  DateTime        @default(now()) @db.Timestamptz(6)
+  updated_at                                  DateTime        @default(now()) @db.Timestamptz(6)
+  customer_id                                 Int
+  assigned_agent_id                           Int?
+  assigned_technician_id                      Int?
+  location_name                               String?
+  location_address                            String?
+  location_city                               String?
+  location_province                           String?
+  location_country                            String?
+  sla_due_at                                  DateTime?       @db.Timestamptz(6)
+  activities                                  activities[]
+  users_tickets_assigned_agent_idTousers      users?          @relation("tickets_assigned_agent_idTousers", fields: [assigned_agent_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users_tickets_assigned_technician_idTousers users?          @relation("tickets_assigned_technician_idTousers", fields: [assigned_technician_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  customers                                   customers       @relation(fields: [customer_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model users {
+  id                                            Int            @id @default(autoincrement())
+  name                                          String
+  email                                         String         @unique
+  avatar                                        String?
+  role                                          user_role
+  department                                    String?
+  activities                                    activities[]
+  team_members                                  team_members[]
+  tickets_tickets_assigned_agent_idTousers      tickets[]      @relation("tickets_assigned_agent_idTousers")
+  tickets_tickets_assigned_technician_idTousers tickets[]      @relation("tickets_assigned_technician_idTousers")
+}
+
+enum activity_type {
+  CREATION
+  ASSIGNMENT
+  STATUS_CHANGE
+  COMMENT
+  TECHNICIAN_ASSIGNMENT
+  WORK_LOG
+}
+
+enum ticket_priority {
+  LOW
+  NORMAL
+  HIGH
+  URGENT
+}
+
+enum ticket_status {
+  NEW
+  ASSIGNED
+  IN_PROGRESS
+  AWAITING_CUSTOMER
+  CLOSED
+}
+
+enum user_role {
+  AGENT
+  TECHNICIAN
+  MANAGER
+}
