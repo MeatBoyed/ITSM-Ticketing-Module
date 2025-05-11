@@ -7,34 +7,73 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 export function TicketsList() {
     const { tickets, selectedTicket, setSelectedTicket, activeTab, setActiveTab, } = useTicketContext();
 
+    // const ticketCounts = useCallback(() => {
+    //     return {
+    //         all: tickets.length,
+    //         open: tickets.filter((t) => t.status === "Open").length,
+    //         inProgress: tickets.filter((t) => t.status === "In Progress").length,
+    //         onHold: tickets.filter((t) => t.status === "On Hold").length,
+    //         escalated: tickets.filter((t) => t.status === "Escalated").length,
+    //         resolved: tickets.filter((t) => t.status === "Resolved").length,
+    //         closed: tickets.filter((t) => t.status === "Closed").length,
+    //     }
+    // }, [tickets])
+
+    // const getFilteredTickets = () => {
+    //     switch (activeTab) {
+    //         case "open":
+    //             return tickets.filter((t) => t.status === "Open")
+    //         case "inProgress":
+    //             return tickets.filter((t) => t.status === "In Progress")
+    //         case "onHold":
+    //             return tickets.filter((t) => t.status === "On Hold")
+    //         case "escalated":
+    //             return tickets.filter((t) => t.status === "Escalated")
+    //         case "resolved":
+    //             return tickets.filter((t) => t.status === "Resolved")
+    //         case "closed":
+    //             return tickets.filter((t) => t.status === "Closed")
+    //         case "urgent":
+    //             return tickets.filter((t) => t.priority === "Urgent")
+    //         case "all":
+    //         default:
+    //             return tickets
+    //     }
+    // }
+
+
     const ticketCounts = useCallback(() => {
         return {
             all: tickets.length,
-            open: tickets.filter((t) => t.status === "Open").length,
-            inProgress: tickets.filter((t) => t.status === "In Progress").length,
-            onHold: tickets.filter((t) => t.status === "On Hold").length,
-            escalated: tickets.filter((t) => t.status === "Escalated").length,
-            resolved: tickets.filter((t) => t.status === "Resolved").length,
-            closed: tickets.filter((t) => t.status === "Closed").length,
+            open: tickets.filter((t) =>
+                ["NEW", "ASSIGNED", "IN_PROGRESS", "AWAITING_CUSTOMER"].includes(t.status)
+            ).length,
+            inProgress: tickets.filter((t) => t.status === "IN_PROGRESS").length,
+            onHold: 0, // no direct match in schema — consider handling via activity log or SLA
+            escalated: 0, // same as above
+            resolved: 0, // maybe closed?
+            closed: tickets.filter((t) => t.status === "CLOSED").length,
         }
     }, [tickets])
 
     const getFilteredTickets = () => {
         switch (activeTab) {
             case "open":
-                return tickets.filter((t) => t.status === "Open")
+                return tickets.filter((t) =>
+                    ["NEW", "ASSIGNED", "IN_PROGRESS", "AWAITING_CUSTOMER"].includes(t.status)
+                )
             case "inProgress":
-                return tickets.filter((t) => t.status === "In Progress")
+                return tickets.filter((t) => t.status === "IN_PROGRESS")
             case "onHold":
-                return tickets.filter((t) => t.status === "On Hold")
+                return [] // or implement logic based on activities or SLA
             case "escalated":
-                return tickets.filter((t) => t.status === "Escalated")
+                return [] // same as above
             case "resolved":
-                return tickets.filter((t) => t.status === "Resolved")
+                return [] // depends on whether "CLOSED" means resolved
             case "closed":
-                return tickets.filter((t) => t.status === "Closed")
+                return tickets.filter((t) => t.status === "CLOSED")
             case "urgent":
-                return tickets.filter((t) => t.priority === "Urgent")
+                return tickets.filter((t) => t.priority === "URGENT")
             case "all":
             default:
                 return tickets
@@ -66,7 +105,7 @@ export function TicketsList() {
                         <TabsTrigger value="urgent" className="py-2">
                             Urgent
                             <span className="ml-1 text-xs bg-red-100 text-red-800 px-1.5 py-0.5 rounded-full">
-                                {tickets.filter((t) => t.priority === "Urgent").length}
+                                {tickets.filter((t) => t.priority === "URGENT").length}
                             </span>
                         </TabsTrigger>
                     </TabsList>

@@ -53,29 +53,36 @@ import { agents } from "../../../data/agents"
 import { technicians } from "../../../data/technicians"
 import { Activity, ActivityUser, Ticket, TicketStatus } from "../../types/ticket"
 import { useTicketContext } from "@/contexts/TicketContext"
-
-interface TicketDetailsProps {
-  ticket: Ticket
-  onUpdateTicket: (updatedTicket: Ticket) => void
-}
+import { activity_type, ticket_status, user_role } from "@/generated/prisma"
 
 export function TicketDetails() {
-  // const {
-  //   selectedTicket: ti,
-  //   updateTicket,
-  // } = useTicketContext()
+  const {
+    selectedTicket: ticket,
+    updateTicket,
+  } = useTicketContext()
 
-  // const [isResolveDialogOpen, setIsResolveDialogOpen] = useState(false)
-  // const [resolutionNote, setResolutionNote] = useState("")
-  // const [isEscalateDialogOpen, setIsEscalateDialogOpen] = useState(false)
-  // const [isReassignDialogOpen, setIsReassignDialogOpen] = useState(false)
-  // const [isAssignTechnicianDialogOpen, setIsAssignTechnicianDialogOpen] = useState(false)
-  // const [activeTab, setActiveTab] = useState("details")
+  const [isResolveDialogOpen, setIsResolveDialogOpen] = useState(false)
+  const [resolutionNote, setResolutionNote] = useState("")
+  const [isEscalateDialogOpen, setIsEscalateDialogOpen] = useState(false)
+  const [isReassignDialogOpen, setIsReassignDialogOpen] = useState(false)
+  const [isAssignTechnicianDialogOpen, setIsAssignTechnicianDialogOpen] = useState(false)
+  const [activeTab, setActiveTab] = useState("details")
 
-  // // For demo purposes, we'll assume the current user is an agent
-  // const currentUserRole: "Agent" | "Technician" = "Agent"
+  const currentUserRole: "Agent" | "Technician" = "Agent"
 
-  // const updateTicketStatus = (status: TicketStatus, note?: string) => {
+  if (!ticket) {
+    return (
+      <div className="flex flex-col items-center justify-center h-[700px] text-gray-400">
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mb-4 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+        <p className="text-lg font-medium">Select a ticket to view details</p>
+        <p className="text-sm mt-2">Choose a ticket from the list to view and manage it</p>
+      </div>
+    )
+  }
+
+  // const updateTicketStatus = (status: ticket_status, note?: string) => {
   //   const updatedTicket = {
   //     ...ticket,
   //     status,
@@ -84,7 +91,7 @@ export function TicketDetails() {
   //       ...(ticket.activities || []),
   //       {
   //         id: `act-${Date.now()}`,
-  //         type: "status_change" as Activity["type"],
+  //         type: "status_change" as activity_type,
   //         createdAt: new Date().toISOString(),
   //         description: `Ticket status changed to ${status}`,
   //         note: note || "",
@@ -92,12 +99,13 @@ export function TicketDetails() {
   //           id: "current-user",
   //           name: "Current User",
   //           avatar: "/placeholder.svg?height=40&width=40",
-  //           role: "Agent" as ActivityUser["role"],
+  //           role: currentUserRole as user_role,
   //         },
   //       },
   //     ],
   //   }
-  //   onUpdateTicket(updatedTicket)
+
+  //   updateTicket(updatedTicket)
   // }
 
   // const handleResolveTicket = () => {
@@ -119,17 +127,18 @@ export function TicketDetails() {
   //         type: "escalation" as Activity["type"],
   //         createdAt: new Date().toISOString(),
   //         description: `Ticket escalated to manager`,
-  //         note: note,
+  //         note,
   //         user: {
   //           id: "current-user",
   //           name: "Current User",
   //           avatar: "/placeholder.svg?height=40&width=40",
-  //           role: "Agent" as ActivityUser["role"],
+  //           role: currentUserRole as ActivityUser["role"],
   //         },
   //       },
   //     ],
   //   }
-  //   onUpdateTicket(updatedTicket)
+
+  //   updateTicket(updatedTicket)
   //   setIsEscalateDialogOpen(false)
   // }
 
@@ -148,17 +157,18 @@ export function TicketDetails() {
   //         type: "assignment" as Activity["type"],
   //         createdAt: new Date().toISOString(),
   //         description: `Ticket reassigned to ${agent.name}`,
-  //         note: note,
+  //         note,
   //         user: {
   //           id: "current-user",
   //           name: "Current User",
   //           avatar: "/placeholder.svg?height=40&width=40",
-  //           role: "Agent" as ActivityUser["role"],
+  //           role: currentUserRole,
   //         },
   //       },
   //     ],
   //   }
-  //   onUpdateTicket(updatedTicket)
+
+  //   updateTicket(updatedTicket)
   //   setIsReassignDialogOpen(false)
   // }
 
@@ -187,7 +197,8 @@ export function TicketDetails() {
   //       },
   //     ],
   //   }
-  //   onUpdateTicket(updatedTicket)
+
+  //   updateTicket(updatedTicket)
   //   setIsAssignTechnicianDialogOpen(false)
   // }
 
@@ -215,280 +226,16 @@ export function TicketDetails() {
   //       },
   //     ],
   //   }
-  //   onUpdateTicket(updatedTicket)
+
+  //   updateTicket(updatedTicket)
   // }
-
-  // const getStatusActionButton = () => {
-  //   switch (ticket.status) {
-  //     case "Open":
-  //       return (
-  //         <Button
-  //           variant="default"
-  //           size="sm"
-  //           className="flex items-center gap-1"
-  //           onClick={() => updateTicketStatus("In Progress")}
-  //         >
-  //           <PlayCircle size={14} />
-  //           <span>Start Working</span>
-  //         </Button>
-  //       )
-  //     case "In Progress":
-  //       return (
-  //         <DropdownMenu>
-  //           <DropdownMenuTrigger asChild>
-  //             <Button variant="default" size="sm" className="flex items-center gap-1">
-  //               <RefreshCw size={14} />
-  //               <span>Change Status</span>
-  //             </Button>
-  //           </DropdownMenuTrigger>
-  //           <DropdownMenuContent>
-  //             <DropdownMenuLabel>Update Status</DropdownMenuLabel>
-  //             <DropdownMenuSeparator />
-  //             <DropdownMenuItem onClick={() => updateTicketStatus("On Hold")}>
-  //               <PauseCircle size={14} className="mr-2" />
-  //               <span>Put On Hold</span>
-  //             </DropdownMenuItem>
-  //             <DropdownMenuItem onClick={() => setIsResolveDialogOpen(true)}>
-  //               <CheckCircle size={14} className="mr-2" />
-  //               <span>Mark as Resolved</span>
-  //             </DropdownMenuItem>
-  //           </DropdownMenuContent>
-  //         </DropdownMenu>
-  //       )
-  //     case "On Hold":
-  //       return (
-  //         <Button
-  //           variant="default"
-  //           size="sm"
-  //           className="flex items-center gap-1"
-  //           onClick={() => updateTicketStatus("In Progress")}
-  //         >
-  //           <PlayCircle size={14} />
-  //           <span>Resume Working</span>
-  //         </Button>
-  //       )
-  //     case "Escalated":
-  //       return (
-  //         <Button
-  //           variant="default"
-  //           size="sm"
-  //           className="flex items-center gap-1"
-  //           onClick={() => updateTicketStatus("In Progress")}
-  //         >
-  //           <PlayCircle size={14} />
-  //           <span>Take Ownership</span>
-  //         </Button>
-  //       )
-  //     case "Resolved":
-  //       return (
-  //         <Button
-  //           variant="default"
-  //           size="sm"
-  //           className="flex items-center gap-1"
-  //           onClick={() => updateTicketStatus("Closed")}
-  //         >
-  //           <XCircle size={14} />
-  //           <span>Close Ticket</span>
-  //         </Button>
-  //       )
-  //     default:
-  //       return null
-  //   }
-  // }
-
-  const {
-    selectedTicket: ticket,
-    updateTicket,
-  } = useTicketContext()
-
-  const [isResolveDialogOpen, setIsResolveDialogOpen] = useState(false)
-  const [resolutionNote, setResolutionNote] = useState("")
-  const [isEscalateDialogOpen, setIsEscalateDialogOpen] = useState(false)
-  const [isReassignDialogOpen, setIsReassignDialogOpen] = useState(false)
-  const [isAssignTechnicianDialogOpen, setIsAssignTechnicianDialogOpen] = useState(false)
-  const [activeTab, setActiveTab] = useState("details")
-
-  const currentUserRole: "Agent" | "Technician" = "Agent"
-
-  if (!ticket) {
-    return (
-      <div className="flex flex-col items-center justify-center h-[700px] text-gray-400">
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mb-4 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-        </svg>
-        <p className="text-lg font-medium">Select a ticket to view details</p>
-        <p className="text-sm mt-2">Choose a ticket from the list to view and manage it</p>
-      </div>
-    )
-  }
-
-  const updateTicketStatus = (status: TicketStatus, note?: string) => {
-    const updatedTicket = {
-      ...ticket,
-      status,
-      updatedAt: new Date().toISOString(),
-      activities: [
-        ...(ticket.activities || []),
-        {
-          id: `act-${Date.now()}`,
-          type: "status_change" as Activity["type"],
-          createdAt: new Date().toISOString(),
-          description: `Ticket status changed to ${status}`,
-          note: note || "",
-          user: {
-            id: "current-user",
-            name: "Current User",
-            avatar: "/placeholder.svg?height=40&width=40",
-            role: currentUserRole as ActivityUser["role"],
-          },
-        },
-      ],
-    }
-
-    updateTicket(updatedTicket)
-  }
-
-  const handleResolveTicket = () => {
-    updateTicketStatus("Resolved", resolutionNote)
-    setResolutionNote("")
-    setIsResolveDialogOpen(false)
-  }
-
-  const handleEscalateTicket = (managerId: string, note: string) => {
-    const updatedTicket = {
-      ...ticket,
-      status: "Escalated" as Ticket["status"],
-      updatedAt: new Date().toISOString(),
-      escalatedTo: managerId,
-      activities: [
-        ...(ticket.activities || []),
-        {
-          id: `act-${Date.now()}`,
-          type: "escalation" as Activity["type"],
-          createdAt: new Date().toISOString(),
-          description: `Ticket escalated to manager`,
-          note,
-          user: {
-            id: "current-user",
-            name: "Current User",
-            avatar: "/placeholder.svg?height=40&width=40",
-            role: currentUserRole as ActivityUser["role"],
-          },
-        },
-      ],
-    }
-
-    updateTicket(updatedTicket)
-    setIsEscalateDialogOpen(false)
-  }
-
-  const handleReassignTicket = (agentId: string, note: string) => {
-    const agent = agents.find((a) => a.id === agentId)
-    if (!agent) return
-
-    const updatedTicket = {
-      ...ticket,
-      assignedAgent: agent,
-      updatedAt: new Date().toISOString(),
-      activities: [
-        ...(ticket.activities || []),
-        {
-          id: `act-${Date.now()}`,
-          type: "assignment" as Activity["type"],
-          createdAt: new Date().toISOString(),
-          description: `Ticket reassigned to ${agent.name}`,
-          note,
-          user: {
-            id: "current-user",
-            name: "Current User",
-            avatar: "/placeholder.svg?height=40&width=40",
-            role: currentUserRole,
-          },
-        },
-      ],
-    }
-
-    updateTicket(updatedTicket)
-    setIsReassignDialogOpen(false)
-  }
-
-  const handleAssignTechnician = (technicianId: string, note: string) => {
-    const technician = technicians.find((t) => t.id === technicianId)
-    if (!technician) return
-
-    const updatedTicket = {
-      ...ticket,
-      assignedTechnician: technician,
-      updatedAt: new Date().toISOString(),
-      activities: [
-        ...(ticket.activities || []),
-        // {
-        //   id: `act-${Date.now()}`,
-        //   type: "technician_assignment",
-        //   createdAt: new Date().toISOString(),
-        //   description: `${ticket.assignedTechnician ? "Reassigned" : "Assigned"} technician ${technician.name}`,
-        //   note,
-        //   user: {
-        //     id: "current-user",
-        //     name: "Current User",
-        //     avatar: "/placeholder.svg?height=40&width=40",
-        //     role: currentUserRole,
-        //   },
-        // },
-
-        {
-          id: `act-${Date.now()}`,
-          type: "technician_assignment" as Activity["type"],
-          createdAt: new Date().toISOString(),
-          description: `${ticket.assignedTechnician ? "Reassigned" : "Assigned"} technician ${technician.name}`,
-          note: note,
-          user: {
-            id: "current-user",
-            name: "Current User",
-            avatar: "/placeholder.svg?height=40&width=40",
-            role: "Agent" as ActivityUser["role"],
-          },
-        },
-      ],
-    }
-
-    updateTicket(updatedTicket)
-    setIsAssignTechnicianDialogOpen(false)
-  }
-
-  const handleAddActivity = (type: string, note: string) => {
-    const activityType = type as "comment" | "work_log"
-    const description = activityType === "comment" ? "Added comment" : "Work log entry"
-
-    const updatedTicket = {
-      ...ticket,
-      updatedAt: new Date().toISOString(),
-      activities: [
-        ...(ticket.activities || []),
-        {
-          id: `act-${Date.now()}`,
-          type: activityType,
-          createdAt: new Date().toISOString(),
-          description,
-          note,
-          user: {
-            id: "current-user",
-            name: "Current User",
-            avatar: "/placeholder.svg?height=40&width=40",
-            role: currentUserRole,
-          },
-        },
-      ],
-    }
-
-    updateTicket(updatedTicket)
-  }
 
   const getStatusActionButton = () => {
     switch (ticket.status) {
-      case "Open":
+      case "NEW":
         return (
-          <Button variant="default" size="sm" className="flex items-center gap-1" onClick={() => updateTicketStatus("In Progress")}>
+          // <Button variant="default" size="sm" className="flex items-center gap-1" onClick={() => updateTicketStatus("IN_PROGRESS")}>
+          <Button variant="default" size="sm" className="flex items-center gap-1">
             <PlayCircle size={14} />
             <span>Start Working</span>
           </Button>
@@ -516,7 +263,7 @@ export function TicketDetails() {
             <h2 className="text-xl font-semibold">{ticket.title}</h2>
             <div className="flex items-center mt-1 text-sm text-gray-500">
               <Clock size={14} className="mr-1" />
-              <span>Created {formatDistanceToNow(ticket.createdAt)} ago</span>
+              <span>Created {formatDistanceToNow(ticket.created_at.toLocaleDateString())} ago</span>
             </div>
           </div>
           <div className="flex space-x-2">
@@ -535,7 +282,7 @@ export function TicketDetails() {
                   <Users size={14} className="mr-2" />
                   <span>Reassign Agent</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setIsAssignTechnicianDialogOpen(true)}>
+                {/* <DropdownMenuItem onClick={() => setIsAssignTechnicianDialogOpen(true)}>
                   <Tool size={14} className="mr-2" />
                   <span>{ticket.assignedTechnician ? "Reassign" : "Assign"} Technician</span>
                 </DropdownMenuItem>
@@ -560,7 +307,7 @@ export function TicketDetails() {
                     <RefreshCw size={14} className="mr-2" />
                     <span>Reopen Ticket</span>
                   </DropdownMenuItem>
-                )}
+                )} */}
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
@@ -613,11 +360,11 @@ export function TicketDetails() {
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-500">Created:</span>
-                      <span className="font-medium">{formatDate(ticket.createdAt)}</span>
+                      <span className="font-medium">{formatDate(ticket.created_at.toLocaleDateString())}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-500">Updated:</span>
-                      <span className="font-medium">{formatDate(ticket.updatedAt)}</span>
+                      <span className="font-medium">{formatDate(ticket.updated_at.toLocaleDateString())}</span>
                     </div>
                   </div>
                 </div>
@@ -631,16 +378,16 @@ export function TicketDetails() {
                   <div className="space-y-3 text-sm">
                     <div className="flex justify-between">
                       <span className="text-gray-500">Name:</span>
-                      <span className="font-medium">{ticket.location.name}</span>
+                      <span className="font-medium">{ticket.location_name}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-500">Address:</span>
-                      <span className="font-medium">{ticket.location.address}</span>
+                      <span className="font-medium">{ticket.location_address}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-500">City:</span>
                       <span className="font-medium">
-                        {ticket.location.city}, {ticket.location.state} {ticket.location.zip}
+                        {ticket.location_city}, {ticket.location_province}
                       </span>
                     </div>
                   </div>
@@ -653,20 +400,20 @@ export function TicketDetails() {
                     Assigned Agent
                   </h3>
                   <div className="flex items-center">
-                    <Avatar className="h-10 w-10 mr-3">
+                    {/* <Avatar className="h-10 w-10 mr-3">
                       <AvatarImage
                         src={ticket.assignedAgent.avatar || "/placeholder.svg"}
                         alt={ticket.assignedAgent.name}
                       />
                       <AvatarFallback>{ticket.assignedAgent.name.charAt(0)}</AvatarFallback>
-                    </Avatar>
-                    <div>
+                    </Avatar> */}
+                    {/* <div>
                       <p className="font-medium">{ticket.assignedAgent.name}</p>
                       <p className="text-xs text-gray-500">{ticket.assignedAgent.role}</p>
-                    </div>
-                    <Button variant="ghost" size="sm" className="ml-auto" onClick={() => setIsReassignDialogOpen(true)}>
+                    </div> */}
+                    {/* <Button variant="ghost" size="sm" className="ml-auto" onClick={() => setIsReassignDialogOpen(true)}>
                       Reassign
-                    </Button>
+                    </Button> */}
                   </div>
                 </div>
               </div>
@@ -720,23 +467,23 @@ export function TicketDetails() {
                     Customer Information
                   </h3>
                   <div className="flex items-center mb-3">
-                    <Avatar className="h-10 w-10 mr-3">
+                    {/* <Avatar className="h-10 w-10 mr-3">
                       <AvatarImage src="/placeholder.svg" alt={ticket.customer.name} />
                       <AvatarFallback>{ticket.customer.name.charAt(0)}</AvatarFallback>
-                    </Avatar>
+                    </Avatar> */}
                     <div>
-                      <p className="font-medium">{ticket.customer.name}</p>
-                      <p className="text-xs text-gray-500">{ticket.customer.email}</p>
+                      {/* <p className="font-medium">{ticket.customer.name}</p>
+                      <p className="text-xs text-gray-500">{ticket.customer.email}</p> */}
                     </div>
                   </div>
                   <div className="space-y-2 text-sm">
                     <div className="flex items-center">
                       <Mail size={14} className="mr-2 text-gray-500" />
-                      <span>{ticket.customer.email}</span>
+                      {/* <span>{ticket.customer.email}</span> */}
                     </div>
                     <div className="flex items-center">
                       <Phone size={14} className="mr-2 text-gray-500" />
-                      <span>{ticket.customer.phone}</span>
+                      {/* <span>{ticket.customer.phone}</span> */}
                     </div>
                   </div>
                   <div className="mt-3">
@@ -761,12 +508,12 @@ export function TicketDetails() {
                     <div className="flex justify-between">
                       <span className="text-gray-500">Resolution Target:</span>
                       <span className="font-medium">
-                        {ticket.priority === "Urgent" ? "4 hours" : ticket.priority === "High" ? "8 hours" : "24 hours"}
+                        {ticket.priority === "URGENT" ? "4 hours" : ticket.priority === "HIGH" ? "8 hours" : "24 hours"}
                       </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-500">Time Elapsed:</span>
-                      <span className="font-medium">{formatDistanceToNow(ticket.createdAt)}</span>
+                      <span className="font-medium">{formatDistanceToNow(ticket.created_at.toLocaleDateString())}</span>
                     </div>
                   </div>
                 </div>
@@ -783,14 +530,14 @@ export function TicketDetails() {
           </TabsContent>
 
           <TabsContent value="activity" className="flex-1 overflow-auto p-6 space-y-6">
-            <AddActivityForm onAddActivity={handleAddActivity} userRole={currentUserRole} />
-            <TicketActivity activities={ticket.activities || []} />
+            {/* <AddActivityForm onAddActivity={handleAddActivity} userRole={currentUserRole} />
+            <TicketActivity activities={ticket.activities || []} /> */}
           </TabsContent>
 
           <TabsContent value="customer" className="flex-1 overflow-auto p-6">
             <div className="space-y-6">
               <div className="bg-gray-50 rounded-lg p-6">
-                <div className="flex items-center mb-4">
+                {/* <div className="flex items-center mb-4">
                   <Avatar className="h-16 w-16 mr-4">
                     <AvatarImage src="/placeholder.svg" alt={ticket.customer.name} />
                     <AvatarFallback>{ticket.customer.name.charAt(0)}</AvatarFallback>
@@ -800,7 +547,7 @@ export function TicketDetails() {
                     <p className="text-gray-500">{ticket.customer.email}</p>
                     <p className="text-gray-500">{ticket.customer.phone}</p>
                   </div>
-                </div>
+                </div> */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
                   <Button className="flex items-center justify-center gap-2">
                     <Mail size={16} />
@@ -846,7 +593,7 @@ export function TicketDetails() {
       </div>
 
       {/* Resolve Ticket Dialog */}
-      <Dialog open={isResolveDialogOpen} onOpenChange={setIsResolveDialogOpen}>
+      {/* <Dialog open={isResolveDialogOpen} onOpenChange={setIsResolveDialogOpen}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Resolve Ticket</DialogTitle>
@@ -867,30 +614,30 @@ export function TicketDetails() {
             <Button onClick={handleResolveTicket}>Resolve Ticket</Button>
           </DialogFooter>
         </DialogContent>
-      </Dialog>
+      </Dialog> */}
 
       {/* Escalate Ticket Dialog */}
-      <EscalateTicketDialog
+      {/* <EscalateTicketDialog
         open={isEscalateDialogOpen}
         onOpenChange={setIsEscalateDialogOpen}
         onEscalate={handleEscalateTicket}
-      />
+      /> */}
 
       {/* Reassign Ticket Dialog */}
-      <ReassignTicketDialog
+      {/* <ReassignTicketDialog
         open={isReassignDialogOpen}
         onOpenChange={setIsReassignDialogOpen}
         onReassign={handleReassignTicket}
         currentAgent={ticket.assignedAgent}
-      />
+      /> */}
 
       {/* Assign Technician Dialog */}
-      <AssignTechnicianDialog
+      {/* <AssignTechnicianDialog
         open={isAssignTechnicianDialogOpen}
         onOpenChange={setIsAssignTechnicianDialogOpen}
         onAssign={handleAssignTechnician}
         currentTechnician={ticket.assignedTechnician}
-      />
+      /> */}
     </div>
   )
 }

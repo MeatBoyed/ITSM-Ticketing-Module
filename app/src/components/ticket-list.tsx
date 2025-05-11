@@ -10,11 +10,12 @@ import { getStatusColor } from "@/lib/colors"
 import { Search, Filter } from "lucide-react"
 import type { Ticket } from "../types/ticket"
 import { useState } from "react"
+import { GetTicket } from "@/lib/TicketService"
 
 interface TicketListProps {
-  tickets: Ticket[]
-  selectedTicketId?: string
-  onSelectTicket: (ticket: Ticket) => void
+  tickets: GetTicket[]
+  selectedTicketId?: number
+  onSelectTicket: (ticket: GetTicket) => void
 }
 
 export function TicketList({ tickets, selectedTicketId, onSelectTicket }: TicketListProps) {
@@ -23,8 +24,8 @@ export function TicketList({ tickets, selectedTicketId, onSelectTicket }: Ticket
   const filteredTickets = tickets.filter(
     (ticket) =>
       ticket.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      ticket.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      ticket.customer.name.toLowerCase().includes(searchQuery.toLowerCase()),
+      ticket.id.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
+      ticket.customers.name.toLowerCase().includes(searchQuery.toLowerCase()),
   )
 
   return (
@@ -75,7 +76,7 @@ export function TicketList({ tickets, selectedTicketId, onSelectTicket }: Ticket
                       <Badge variant="secondary" className={`${getStatusColor(ticket.status)} text-xs px-1.5 py-0`}>
                         {ticket.status}
                       </Badge>
-                      {ticket.priority === "Urgent" && (
+                      {ticket.priority === "URGENT" && (
                         <Badge variant="outline" className="bg-red-50 text-red-700 border-red-200 text-xs px-1.5 py-0">
                           Urgent
                         </Badge>
@@ -85,7 +86,7 @@ export function TicketList({ tickets, selectedTicketId, onSelectTicket }: Ticket
                     <div className="flex items-center mt-1 text-xs text-gray-500">
                       <span className="truncate">{ticket.id}</span>
                       <span className="mx-1">•</span>
-                      <span>{formatDistanceToNow(ticket.createdAt)}</span>
+                      <span>{formatDistanceToNow(ticket.created_at.toLocaleDateString())}</span>
                     </div>
                   </div>
                   {/* <Avatar className="h-8 w-8 flex-shrink-0">
@@ -98,10 +99,10 @@ export function TicketList({ tickets, selectedTicketId, onSelectTicket }: Ticket
                 </div>
                 <div className="mt-2 flex items-center text-xs">
                   <Avatar className="h-5 w-5 mr-1">
-                    <AvatarImage src="/placeholder.svg?height=20&width=20" alt={ticket.customer.name} />
-                    <AvatarFallback>{ticket.customer.name.charAt(0)}</AvatarFallback>
+                    <AvatarImage src="/placeholder.svg?height=20&width=20" alt={ticket.customers.name} />
+                    <AvatarFallback>{ticket.customers.name.charAt(0)}</AvatarFallback>
                   </Avatar>
-                  <span className="text-gray-600 truncate">{ticket.customer.name}</span>
+                  <span className="text-gray-600 truncate">{ticket.customers.name}</span>
                 </div>
               </div>
             ))

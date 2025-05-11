@@ -10,22 +10,22 @@ interface DashboardStatsProps {
 export function DashboardStats() {
   const { tickets } = useTicketContext()
   // Calculate stats
-  const openTickets = tickets.filter((t) => t.status === "Open").length
-  const urgentTickets = tickets.filter((t) => t.priority === "Urgent").length
+  const openTickets = tickets.filter((t) => t.status === "IN_PROGRESS").length
+  const urgentTickets = tickets.filter((t) => t.priority === "URGENT").length
   const resolvedToday = tickets.filter((t) => {
     const today = new Date().toISOString().split("T")[0]
-    const ticketDate = new Date(t.updatedAt).toISOString().split("T")[0]
-    return t.status === "Resolved" && ticketDate === today
+    const ticketDate = new Date(t.updated_at).toISOString().split("T")[0]
+    return t.status === "CLOSED" && ticketDate === today
   }).length
 
   // Calculate average resolution time (in hours) for resolved tickets
-  const resolvedTickets = tickets.filter((t) => t.status === "Resolved" || t.status === "Closed")
+  const resolvedTickets = tickets.filter((t) => t.status === "IN_PROGRESS" || t.status === "CLOSED")
   let avgResolutionTime = 0
 
   if (resolvedTickets.length > 0) {
     const totalHours = resolvedTickets.reduce((total, ticket) => {
-      const created = new Date(ticket.createdAt).getTime()
-      const updated = new Date(ticket.updatedAt).getTime()
+      const created = new Date(ticket.created_at).getTime()
+      const updated = new Date(ticket.updated_at).getTime()
       return total + (updated - created) / (1000 * 60 * 60) // Convert ms to hours
     }, 0)
     avgResolutionTime = Math.round(totalHours / resolvedTickets.length)

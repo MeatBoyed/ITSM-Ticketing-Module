@@ -19,11 +19,11 @@ export function TicketingDashboard() {
   // Filter tickets based on active tab
 
 
-  const handleUpdateTicket = (updatedTicket: Ticket) => {
-    const updatedTickets = tickets.map((ticket) => (ticket.id === updatedTicket.id ? updatedTicket : ticket))
-    setTickets(updatedTickets)
-    setSelectedTicket(updatedTicket)
-  }
+  // const handleUpdateTicket = (updatedTicket: Ticket) => {
+  //   const updatedTickets = tickets.map((ticket) => (ticket.id === updatedTicket.id ? updatedTicket : ticket))
+  //   setTickets(updatedTickets)
+  //   setSelectedTicket(updatedTicket)
+  // }
 
   return (
     <>

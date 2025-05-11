@@ -3,25 +3,32 @@
 import { createContext, useContext, useState, useCallback, ReactNode } from "react"
 import { Ticket } from "@/types/ticket"
 import { dummyTickets } from "../../data/dummy-tickets"
+import { tickets } from "@/generated/prisma"
+import { GetTicket } from "@/lib/TicketService"
 
 type TicketContextType = {
-    tickets: Ticket[]
-    setTickets: (tickets: Ticket[]) => void
-    selectedTicket: Ticket | null
-    setSelectedTicket: (ticket: Ticket | null) => void
-    updateTicket: (updatedTicket: Ticket) => void
+    tickets: GetTicket[]
+    setTickets: (tickets: GetTicket[]) => void
+    selectedTicket: GetTicket | null
+    setSelectedTicket: (ticket: GetTicket | null) => void
+    updateTicket: (updatedTicket: GetTicket) => void
     activeTab: string
     setActiveTab: (tab: string) => void
 }
 
 const TicketContext = createContext<TicketContextType | undefined>(undefined)
 
-export const TicketProvider = ({ children }: { children: ReactNode }) => {
-    const [tickets, setTickets] = useState<Ticket[]>(dummyTickets)
-    const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null)
+interface TicketProviderProps {
+    initialTickets: GetTicket[]
+    children: React.ReactNode
+}
+
+export const TicketProvider = ({ initialTickets, children }: TicketProviderProps) => {
+    const [tickets, setTickets] = useState<GetTicket[]>(initialTickets)
+    const [selectedTicket, setSelectedTicket] = useState<GetTicket | null>(null)
     const [activeTab, setActiveTab] = useState<string>("all")
 
-    const updateTicket = useCallback((updated: Ticket) => {
+    const updateTicket = useCallback((updated: GetTicket) => {
         setTickets((prev) =>
             prev.map((t) => (t.id === updated.id ? updated : t))
         )
