@@ -1,4 +1,4 @@
-import { Technician } from "../types/ticket";
+import { Technician } from "../src/types/ticket";
 
 export const technicians: Technician[] = [
   {

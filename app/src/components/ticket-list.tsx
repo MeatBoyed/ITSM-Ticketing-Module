@@ -8,7 +8,7 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { formatDistanceToNow } from "@/lib/utils"
 import { getStatusColor } from "@/lib/colors"
 import { Search, Filter } from "lucide-react"
-import type { Ticket } from "../../types/ticket"
+import type { Ticket } from "../types/ticket"
 import { useState } from "react"
 
 interface TicketListProps {

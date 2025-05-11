@@ -14,7 +14,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { agents } from "../../data/agents"
+import { agents } from "../../../data/agents"
 import type { Agent } from "../../types/ticket"
 
 interface ReassignTicketDialogProps {

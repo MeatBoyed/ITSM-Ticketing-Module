@@ -15,7 +15,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
-import { technicians } from "../../data/technicians"
+import { technicians } from "../../../data/technicians"
 import type { Technician } from "../../types/ticket"
 
 interface AssignTechnicianDialogProps {

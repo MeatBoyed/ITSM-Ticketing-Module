@@ -2,9 +2,9 @@
 
 import { useState } from "react"
 import { TicketList } from "@/components/ticket-list"
-import { TicketDetails } from "@/components/ticket-details"
+import { TicketDetails } from "@/components/ticketing/ticket-details"
 import { TicketFilters } from "@/components/ticket-filters"
-import type { Ticket } from "../../types/ticket"
+import type { Ticket } from "../types/ticket"
 import { dummyTickets } from "../../data/dummy-tickets"
 
 export function TicketDashboard() {

@@ -1,4 +1,4 @@
-import type { Ticket } from "../types/ticket"
+import type { Ticket } from "../src/types/ticket"
 import { locations } from "../data/locations"
 import { technicians } from "../data/technicians"
 

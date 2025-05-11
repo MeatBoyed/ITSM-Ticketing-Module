@@ -45,20 +45,262 @@ import {
   PenToolIcon as Tool,
 } from "lucide-react"
 import { TicketActivity } from "@/components/ticket-activity"
-import { EscalateTicketDialog } from "@/components/escalate-ticket-dialog"
-import { ReassignTicketDialog } from "@/components/reassign-ticket-dialog"
-import { AssignTechnicianDialog } from "@/components/assign-technician-dialog"
+import { EscalateTicketDialog } from "@/components/dialogs/escalate-ticket-dialog"
+import { ReassignTicketDialog } from "@/components/dialogs/reassign-ticket-dialog"
+import { AssignTechnicianDialog } from "@/components/dialogs/assign-technician-dialog"
 import { AddActivityForm } from "@/components/add-activity-form"
-import { agents } from "../../data/agents"
-import { technicians } from "../../data/technicians"
+import { agents } from "../../../data/agents"
+import { technicians } from "../../../data/technicians"
 import { Activity, ActivityUser, Ticket, TicketStatus } from "../../types/ticket"
+import { useTicketContext } from "@/contexts/TicketContext"
 
 interface TicketDetailsProps {
   ticket: Ticket
   onUpdateTicket: (updatedTicket: Ticket) => void
 }
 
-export function TicketDetails({ ticket, onUpdateTicket }: TicketDetailsProps) {
+export function TicketDetails() {
+  // const {
+  //   selectedTicket: ti,
+  //   updateTicket,
+  // } = useTicketContext()
+
+  // const [isResolveDialogOpen, setIsResolveDialogOpen] = useState(false)
+  // const [resolutionNote, setResolutionNote] = useState("")
+  // const [isEscalateDialogOpen, setIsEscalateDialogOpen] = useState(false)
+  // const [isReassignDialogOpen, setIsReassignDialogOpen] = useState(false)
+  // const [isAssignTechnicianDialogOpen, setIsAssignTechnicianDialogOpen] = useState(false)
+  // const [activeTab, setActiveTab] = useState("details")
+
+  // // For demo purposes, we'll assume the current user is an agent
+  // const currentUserRole: "Agent" | "Technician" = "Agent"
+
+  // const updateTicketStatus = (status: TicketStatus, note?: string) => {
+  //   const updatedTicket = {
+  //     ...ticket,
+  //     status,
+  //     updatedAt: new Date().toISOString(),
+  //     activities: [
+  //       ...(ticket.activities || []),
+  //       {
+  //         id: `act-${Date.now()}`,
+  //         type: "status_change" as Activity["type"],
+  //         createdAt: new Date().toISOString(),
+  //         description: `Ticket status changed to ${status}`,
+  //         note: note || "",
+  //         user: {
+  //           id: "current-user",
+  //           name: "Current User",
+  //           avatar: "/placeholder.svg?height=40&width=40",
+  //           role: "Agent" as ActivityUser["role"],
+  //         },
+  //       },
+  //     ],
+  //   }
+  //   onUpdateTicket(updatedTicket)
+  // }
+
+  // const handleResolveTicket = () => {
+  //   updateTicketStatus("Resolved", resolutionNote)
+  //   setResolutionNote("")
+  //   setIsResolveDialogOpen(false)
+  // }
+
+  // const handleEscalateTicket = (managerId: string, note: string) => {
+  //   const updatedTicket = {
+  //     ...ticket,
+  //     status: "Escalated" as Ticket["status"],
+  //     updatedAt: new Date().toISOString(),
+  //     escalatedTo: managerId,
+  //     activities: [
+  //       ...(ticket.activities || []),
+  //       {
+  //         id: `act-${Date.now()}`,
+  //         type: "escalation" as Activity["type"],
+  //         createdAt: new Date().toISOString(),
+  //         description: `Ticket escalated to manager`,
+  //         note: note,
+  //         user: {
+  //           id: "current-user",
+  //           name: "Current User",
+  //           avatar: "/placeholder.svg?height=40&width=40",
+  //           role: "Agent" as ActivityUser["role"],
+  //         },
+  //       },
+  //     ],
+  //   }
+  //   onUpdateTicket(updatedTicket)
+  //   setIsEscalateDialogOpen(false)
+  // }
+
+  // const handleReassignTicket = (agentId: string, note: string) => {
+  //   const agent = agents.find((a) => a.id === agentId)
+  //   if (!agent) return
+
+  //   const updatedTicket = {
+  //     ...ticket,
+  //     assignedAgent: agent,
+  //     updatedAt: new Date().toISOString(),
+  //     activities: [
+  //       ...(ticket.activities || []),
+  //       {
+  //         id: `act-${Date.now()}`,
+  //         type: "assignment" as Activity["type"],
+  //         createdAt: new Date().toISOString(),
+  //         description: `Ticket reassigned to ${agent.name}`,
+  //         note: note,
+  //         user: {
+  //           id: "current-user",
+  //           name: "Current User",
+  //           avatar: "/placeholder.svg?height=40&width=40",
+  //           role: "Agent" as ActivityUser["role"],
+  //         },
+  //       },
+  //     ],
+  //   }
+  //   onUpdateTicket(updatedTicket)
+  //   setIsReassignDialogOpen(false)
+  // }
+
+  // const handleAssignTechnician = (technicianId: string, note: string) => {
+  //   const technician = technicians.find((t) => t.id === technicianId)
+  //   if (!technician) return
+
+  //   const updatedTicket = {
+  //     ...ticket,
+  //     assignedTechnician: technician,
+  //     updatedAt: new Date().toISOString(),
+  //     activities: [
+  //       ...(ticket.activities || []),
+  //       {
+  //         id: `act-${Date.now()}`,
+  //         type: "technician_assignment" as Activity["type"],
+  //         createdAt: new Date().toISOString(),
+  //         description: `${ticket.assignedTechnician ? "Reassigned" : "Assigned"} technician ${technician.name}`,
+  //         note: note,
+  //         user: {
+  //           id: "current-user",
+  //           name: "Current User",
+  //           avatar: "/placeholder.svg?height=40&width=40",
+  //           role: "Agent" as ActivityUser["role"],
+  //         },
+  //       },
+  //     ],
+  //   }
+  //   onUpdateTicket(updatedTicket)
+  //   setIsAssignTechnicianDialogOpen(false)
+  // }
+
+  // const handleAddActivity = (type: string, note: string) => {
+  //   const activityType = type as "comment" | "work_log"
+  //   const description = activityType === "comment" ? "Added comment" : "Work log entry"
+
+  //   const updatedTicket = {
+  //     ...ticket,
+  //     updatedAt: new Date().toISOString(),
+  //     activities: [
+  //       ...(ticket.activities || []),
+  //       {
+  //         id: `act-${Date.now()}`,
+  //         type: activityType,
+  //         createdAt: new Date().toISOString(),
+  //         description,
+  //         note,
+  //         user: {
+  //           id: "current-user",
+  //           name: "Current User",
+  //           avatar: "/placeholder.svg?height=40&width=40",
+  //           role: currentUserRole,
+  //         },
+  //       },
+  //     ],
+  //   }
+  //   onUpdateTicket(updatedTicket)
+  // }
+
+  // const getStatusActionButton = () => {
+  //   switch (ticket.status) {
+  //     case "Open":
+  //       return (
+  //         <Button
+  //           variant="default"
+  //           size="sm"
+  //           className="flex items-center gap-1"
+  //           onClick={() => updateTicketStatus("In Progress")}
+  //         >
+  //           <PlayCircle size={14} />
+  //           <span>Start Working</span>
+  //         </Button>
+  //       )
+  //     case "In Progress":
+  //       return (
+  //         <DropdownMenu>
+  //           <DropdownMenuTrigger asChild>
+  //             <Button variant="default" size="sm" className="flex items-center gap-1">
+  //               <RefreshCw size={14} />
+  //               <span>Change Status</span>
+  //             </Button>
+  //           </DropdownMenuTrigger>
+  //           <DropdownMenuContent>
+  //             <DropdownMenuLabel>Update Status</DropdownMenuLabel>
+  //             <DropdownMenuSeparator />
+  //             <DropdownMenuItem onClick={() => updateTicketStatus("On Hold")}>
+  //               <PauseCircle size={14} className="mr-2" />
+  //               <span>Put On Hold</span>
+  //             </DropdownMenuItem>
+  //             <DropdownMenuItem onClick={() => setIsResolveDialogOpen(true)}>
+  //               <CheckCircle size={14} className="mr-2" />
+  //               <span>Mark as Resolved</span>
+  //             </DropdownMenuItem>
+  //           </DropdownMenuContent>
+  //         </DropdownMenu>
+  //       )
+  //     case "On Hold":
+  //       return (
+  //         <Button
+  //           variant="default"
+  //           size="sm"
+  //           className="flex items-center gap-1"
+  //           onClick={() => updateTicketStatus("In Progress")}
+  //         >
+  //           <PlayCircle size={14} />
+  //           <span>Resume Working</span>
+  //         </Button>
+  //       )
+  //     case "Escalated":
+  //       return (
+  //         <Button
+  //           variant="default"
+  //           size="sm"
+  //           className="flex items-center gap-1"
+  //           onClick={() => updateTicketStatus("In Progress")}
+  //         >
+  //           <PlayCircle size={14} />
+  //           <span>Take Ownership</span>
+  //         </Button>
+  //       )
+  //     case "Resolved":
+  //       return (
+  //         <Button
+  //           variant="default"
+  //           size="sm"
+  //           className="flex items-center gap-1"
+  //           onClick={() => updateTicketStatus("Closed")}
+  //         >
+  //           <XCircle size={14} />
+  //           <span>Close Ticket</span>
+  //         </Button>
+  //       )
+  //     default:
+  //       return null
+  //   }
+  // }
+
+  const {
+    selectedTicket: ticket,
+    updateTicket,
+  } = useTicketContext()
+
   const [isResolveDialogOpen, setIsResolveDialogOpen] = useState(false)
   const [resolutionNote, setResolutionNote] = useState("")
   const [isEscalateDialogOpen, setIsEscalateDialogOpen] = useState(false)
@@ -66,8 +308,19 @@ export function TicketDetails({ ticket, onUpdateTicket }: TicketDetailsProps) {
   const [isAssignTechnicianDialogOpen, setIsAssignTechnicianDialogOpen] = useState(false)
   const [activeTab, setActiveTab] = useState("details")
 
-  // For demo purposes, we'll assume the current user is an agent
   const currentUserRole: "Agent" | "Technician" = "Agent"
+
+  if (!ticket) {
+    return (
+      <div className="flex flex-col items-center justify-center h-[700px] text-gray-400">
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mb-4 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+        <p className="text-lg font-medium">Select a ticket to view details</p>
+        <p className="text-sm mt-2">Choose a ticket from the list to view and manage it</p>
+      </div>
+    )
+  }
 
   const updateTicketStatus = (status: TicketStatus, note?: string) => {
     const updatedTicket = {
@@ -86,12 +339,13 @@ export function TicketDetails({ ticket, onUpdateTicket }: TicketDetailsProps) {
             id: "current-user",
             name: "Current User",
             avatar: "/placeholder.svg?height=40&width=40",
-            role: "Agent" as ActivityUser["role"],
+            role: currentUserRole as ActivityUser["role"],
           },
         },
       ],
     }
-    onUpdateTicket(updatedTicket)
+
+    updateTicket(updatedTicket)
   }
 
   const handleResolveTicket = () => {
@@ -113,17 +367,18 @@ export function TicketDetails({ ticket, onUpdateTicket }: TicketDetailsProps) {
           type: "escalation" as Activity["type"],
           createdAt: new Date().toISOString(),
           description: `Ticket escalated to manager`,
-          note: note,
+          note,
           user: {
             id: "current-user",
             name: "Current User",
             avatar: "/placeholder.svg?height=40&width=40",
-            role: "Agent" as ActivityUser["role"],
+            role: currentUserRole as ActivityUser["role"],
           },
         },
       ],
     }
-    onUpdateTicket(updatedTicket)
+
+    updateTicket(updatedTicket)
     setIsEscalateDialogOpen(false)
   }
 
@@ -142,17 +397,18 @@ export function TicketDetails({ ticket, onUpdateTicket }: TicketDetailsProps) {
           type: "assignment" as Activity["type"],
           createdAt: new Date().toISOString(),
           description: `Ticket reassigned to ${agent.name}`,
-          note: note,
+          note,
           user: {
             id: "current-user",
             name: "Current User",
             avatar: "/placeholder.svg?height=40&width=40",
-            role: "Agent" as ActivityUser["role"],
+            role: currentUserRole,
           },
         },
       ],
     }
-    onUpdateTicket(updatedTicket)
+
+    updateTicket(updatedTicket)
     setIsReassignDialogOpen(false)
   }
 
@@ -166,6 +422,20 @@ export function TicketDetails({ ticket, onUpdateTicket }: TicketDetailsProps) {
       updatedAt: new Date().toISOString(),
       activities: [
         ...(ticket.activities || []),
+        // {
+        //   id: `act-${Date.now()}`,
+        //   type: "technician_assignment",
+        //   createdAt: new Date().toISOString(),
+        //   description: `${ticket.assignedTechnician ? "Reassigned" : "Assigned"} technician ${technician.name}`,
+        //   note,
+        //   user: {
+        //     id: "current-user",
+        //     name: "Current User",
+        //     avatar: "/placeholder.svg?height=40&width=40",
+        //     role: currentUserRole,
+        //   },
+        // },
+
         {
           id: `act-${Date.now()}`,
           type: "technician_assignment" as Activity["type"],
@@ -181,7 +451,8 @@ export function TicketDetails({ ticket, onUpdateTicket }: TicketDetailsProps) {
         },
       ],
     }
-    onUpdateTicket(updatedTicket)
+
+    updateTicket(updatedTicket)
     setIsAssignTechnicianDialogOpen(false)
   }
 
@@ -209,84 +480,20 @@ export function TicketDetails({ ticket, onUpdateTicket }: TicketDetailsProps) {
         },
       ],
     }
-    onUpdateTicket(updatedTicket)
+
+    updateTicket(updatedTicket)
   }
 
   const getStatusActionButton = () => {
     switch (ticket.status) {
       case "Open":
         return (
-          <Button
-            variant="default"
-            size="sm"
-            className="flex items-center gap-1"
-            onClick={() => updateTicketStatus("In Progress")}
-          >
+          <Button variant="default" size="sm" className="flex items-center gap-1" onClick={() => updateTicketStatus("In Progress")}>
             <PlayCircle size={14} />
             <span>Start Working</span>
           </Button>
         )
-      case "In Progress":
-        return (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="default" size="sm" className="flex items-center gap-1">
-                <RefreshCw size={14} />
-                <span>Change Status</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuLabel>Update Status</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => updateTicketStatus("On Hold")}>
-                <PauseCircle size={14} className="mr-2" />
-                <span>Put On Hold</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setIsResolveDialogOpen(true)}>
-                <CheckCircle size={14} className="mr-2" />
-                <span>Mark as Resolved</span>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        )
-      case "On Hold":
-        return (
-          <Button
-            variant="default"
-            size="sm"
-            className="flex items-center gap-1"
-            onClick={() => updateTicketStatus("In Progress")}
-          >
-            <PlayCircle size={14} />
-            <span>Resume Working</span>
-          </Button>
-        )
-      case "Escalated":
-        return (
-          <Button
-            variant="default"
-            size="sm"
-            className="flex items-center gap-1"
-            onClick={() => updateTicketStatus("In Progress")}
-          >
-            <PlayCircle size={14} />
-            <span>Take Ownership</span>
-          </Button>
-        )
-      case "Resolved":
-        return (
-          <Button
-            variant="default"
-            size="sm"
-            className="flex items-center gap-1"
-            onClick={() => updateTicketStatus("Closed")}
-          >
-            <XCircle size={14} />
-            <span>Close Ticket</span>
-          </Button>
-        )
-      default:
-        return null
+      // Add other cases as needed
     }
   }
 
