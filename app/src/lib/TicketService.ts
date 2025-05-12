@@ -63,35 +63,39 @@ export type TicketDetails = GetTicket & {
     agent: Prisma.usersGetPayload<{}> | null,
     technician: Prisma.usersGetPayload<{}> | null,
 }
-export async function getTicket(ticketId: number): Promise<TicketDetails> {
+// export async function getTicket(ticketId: number): Promise<TicketDetails> {
+export async function getTicket(ticketId: number) {
     try {
         const ticket = await prisma.tickets.findUnique({
             where: { id: ticketId },
             include: {
                 customers: true,
                 activities: true,
+                users_tickets_assigned_agent_idTousers: true,
+                users_tickets_assigned_technician_idTousers: true,
             },
         })
         if (ticket === null) {
             throw new Error("Ticket not found")
         }
-        const agent = await prisma.users.findUnique({
-            where: { id: ticket?.assigned_agent_id || undefined, role: "AGENT" },
-        })
-        const technician = await prisma.users.findUnique({
-            where: { id: ticket?.assigned_technician_id || undefined },
-        })
-        return {
-            ...ticket,
-            agent: agent || null,
-            technician: technician || null,
-        }
+        // const agent = await prisma.users.findUnique({
+        //     where: { id: ticket?.assigned_agent_id || undefined, role: "AGENT" },
+        // })
+        // const technician = await prisma.users.findUnique({
+        //     where: { id: ticket?.assigned_technician_id || undefined },
+        // })
+        // return {
+        //     ...ticket,
+        //     agent: agent || null,
+        //     technician: technician || null,
+        // }
+        return ticket
     } catch (error) {
         throw errorHandler(error)
     }
 }
 
-export type GetTicket = (Prisma.ticketsGetPayload<{}> & { customers: Prisma.customersGetPayload<{}>, activities: Prisma.activitiesGetPayload<{}>[] })
+export type GetTicket = (Prisma.ticketsGetPayload<{}> & { customers: Prisma.customersGetPayload<{}>, activities: Prisma.activitiesGetPayload<{}>[], users_tickets_assigned_agent_idTousers: Prisma.usersGetPayload<{}> | null, users_tickets_assigned_technician_idTousers: Prisma.usersGetPayload<{}> | null }) | null
 export async function getTickets(): Promise<GetTicket[]> {
     try {
         return await prisma?.tickets.findMany({
@@ -103,7 +107,6 @@ export async function getTickets(): Promise<GetTicket[]> {
                 users_tickets_assigned_technician_idTousers: true,
             }
         })
-        // return tickets
     } catch (error) {
         throw errorHandler(error)
     }

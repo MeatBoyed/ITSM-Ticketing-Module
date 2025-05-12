@@ -282,32 +282,33 @@ export function TicketDetails() {
                   <Users size={14} className="mr-2" />
                   <span>Reassign Agent</span>
                 </DropdownMenuItem>
-                {/* <DropdownMenuItem onClick={() => setIsAssignTechnicianDialogOpen(true)}>
+                <DropdownMenuItem onClick={() => setIsAssignTechnicianDialogOpen(true)}>
                   <Tool size={14} className="mr-2" />
-                  <span>{ticket.assignedTechnician ? "Reassign" : "Assign"} Technician</span>
+                  <span>{ticket.users_tickets_assigned_technician_idTousers ? "Reassign" : "Assign"} Technician</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => setIsEscalateDialogOpen(true)}>
                   <AlertTriangle size={14} className="mr-2" />
                   <span>Escalate Ticket</span>
                 </DropdownMenuItem>
-                {ticket.status !== "Resolved" && ticket.status !== "Closed" && (
+                {/* {ticket.status !== "Resolved" && ticket.status !== "Closed" && ( */}
+                {ticket.status !== "AWAITING_CUSTOMER" && ticket.status !== "CLOSED" && (
                   <DropdownMenuItem onClick={() => setIsResolveDialogOpen(true)}>
                     <CheckCircle size={14} className="mr-2" />
                     <span>Resolve Ticket</span>
                   </DropdownMenuItem>
                 )}
-                {ticket.status === "Resolved" && (
+                {/* {ticket.status === "Resolved" && (
                   <DropdownMenuItem onClick={() => updateTicketStatus("Closed")}>
                     <XCircle size={14} className="mr-2" />
                     <span>Close Ticket</span>
                   </DropdownMenuItem>
-                )}
-                {ticket.status === "Closed" && (
-                  <DropdownMenuItem onClick={() => updateTicketStatus("Open")}>
+                )} */}
+                {ticket.status === "CLOSED" && (
+                  <DropdownMenuItem >
                     <RefreshCw size={14} className="mr-2" />
                     <span>Reopen Ticket</span>
                   </DropdownMenuItem>
-                )} */}
+                )}
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
@@ -331,12 +332,12 @@ export function TicketDetails() {
               >
                 Activity
               </TabsTrigger>
-              <TabsTrigger
+              {/* <TabsTrigger
                 value="customer"
                 className="rounded-none border-b-2 border-transparent px-4 py-3 data-[state=active]:border-primary"
               >
                 Customer
-              </TabsTrigger>
+              </TabsTrigger> */}
             </TabsList>
           </div>
 
@@ -402,14 +403,14 @@ export function TicketDetails() {
                   <div className="flex items-center">
                     <Avatar className="h-10 w-10 mr-3">
                       <AvatarImage
-                        src={ticket.agent?.avatar || "/placeholder.svg"}
-                        alt={ticket.agent?.name}
+                        src={ticket.users_tickets_assigned_agent_idTousers?.avatar || "/placeholder.svg"}
+                        alt={ticket.users_tickets_assigned_agent_idTousers?.name}
                       />
-                      <AvatarFallback>{ticket.agent?.name.charAt(0)}</AvatarFallback>
+                      <AvatarFallback>{ticket.users_tickets_assigned_agent_idTousers?.name.charAt(0)}</AvatarFallback>
                     </Avatar>
                     <div>
-                      <p className="font-medium">{ticket.agent?.name}</p>
-                      <p className="text-xs text-gray-500">{ticket.agent?.role}</p>
+                      <p className="font-medium">{ticket.users_tickets_assigned_agent_idTousers?.name}</p>
+                      <p className="text-xs text-gray-500">{ticket.users_tickets_assigned_agent_idTousers?.role}</p>
                     </div>
                     <Button variant="ghost" size="sm" className="ml-auto" onClick={() => setIsReassignDialogOpen(true)}>
                       Reassign
@@ -426,29 +427,19 @@ export function TicketDetails() {
                     <Tool size={16} className="mr-2 text-gray-500" />
                     Assigned Technician
                   </h3>
-                  {ticket.technician ? (
+                  {ticket.users_tickets_assigned_technician_idTousers ? (
                     <div className="flex items-center">
                       <Avatar className="h-10 w-10 mr-3">
                         <AvatarImage
-                          src={ticket.technician.avatar || "/placeholder.svg"}
-                          alt={ticket.technician.name}
+                          src={ticket.users_tickets_assigned_technician_idTousers.avatar || "/placeholder.svg"}
+                          alt={ticket.users_tickets_assigned_technician_idTousers.name}
                         />
-                        <AvatarFallback>{ticket.technician.name.charAt(0)}</AvatarFallback>
+                        <AvatarFallback>{ticket.users_tickets_assigned_technician_idTousers.name.charAt(0)}</AvatarFallback>
                       </Avatar>
                       <div>
-                        <p className="font-medium">{ticket.technician.name}</p>
-                        <p className="text-xs text-gray-500">{ticket.technician.role}</p>
+                        <p className="font-medium">{ticket.users_tickets_assigned_technician_idTousers.name}</p>
+                        <p className="text-xs text-gray-500">{ticket.users_tickets_assigned_technician_idTousers.role}</p>
                       </div>
-                      {/* <Badge
-                        className={`ml-auto ${ticket.technician.availability === "Available"
-                          ? "bg-green-100 text-green-800"
-                          : ticket.technician.availability === "Busy"
-                            ? "bg-orange-100 text-orange-800"
-                            : "bg-red-100 text-red-800"
-                          }`}
-                      >
-                        {ticket.technician.availability}
-                      </Badge> */}
                     </div>
                   ) : (
                     <div className="flex items-center justify-between">
@@ -467,10 +458,10 @@ export function TicketDetails() {
                     Customer Information
                   </h3>
                   <div className="flex items-center mb-3">
-                    {/* <Avatar className="h-10 w-10 mr-3">
-                      <AvatarImage src="/placeholder.svg" alt={ticket.customer.name} />
-                      <AvatarFallback>{ticket.customer.name.charAt(0)}</AvatarFallback>
-                    </Avatar> */}
+                    <Avatar className="h-10 w-10 mr-3">
+                      <AvatarImage src="/placeholder.svg" alt={ticket.customers.name} />
+                      <AvatarFallback>{ticket.customers.name.charAt(0)}</AvatarFallback>
+                    </Avatar>
                     <div>
                       <p className="font-medium">{ticket.customers.name}</p>
                       <p className="text-xs text-gray-500">{ticket.customers.email}</p>
@@ -530,11 +521,11 @@ export function TicketDetails() {
           </TabsContent>
 
           <TabsContent value="activity" className="flex-1 overflow-auto p-6 space-y-6">
-            {/* <AddActivityForm onAddActivity={handleAddActivity} userRole={currentUserRole} /> */}
+            <AddActivityForm onAddActivity={() => { return; }} userRole={currentUserRole} />
             <TicketActivity activities={ticket.activities || []} />
           </TabsContent>
 
-          <TabsContent value="customer" className="flex-1 overflow-auto p-6">
+          {/* <TabsContent value="customer" className="flex-1 overflow-auto p-6">
             <div className="space-y-6">
               <div className="bg-gray-50 rounded-lg p-6">
                 <div className="flex items-center mb-4">
@@ -566,7 +557,7 @@ export function TicketDetails() {
                   <div className="bg-white border border-gray-100 rounded-lg p-3">
                     <div className="flex justify-between">
                       <div>
-                        <h4 className="font-medium text-sm">Password reset issue</h4>
+                        <h4 className="font-medium text-sm">Password reset issue - STATIC CONTENT!</h4>
                         <p className="text-xs text-gray-500">TKT-1005 • Resolved 3 days ago</p>
                       </div>
                       <Badge variant="secondary" className="bg-green-100 text-green-800">
@@ -588,7 +579,7 @@ export function TicketDetails() {
                 </div>
               </div>
             </div>
-          </TabsContent>
+          </TabsContent> */}
         </Tabs>
       </div>
 
