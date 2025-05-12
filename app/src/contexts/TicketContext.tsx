@@ -4,13 +4,14 @@ import { createContext, useContext, useState, useCallback, ReactNode } from "rea
 import { Ticket } from "@/types/ticket"
 import { dummyTickets } from "../../data/dummy-tickets"
 import { tickets } from "@/generated/prisma"
-import { GetTicket } from "@/lib/TicketService"
+import { getTicket, GetTicket, TicketDetails } from "@/lib/TicketService"
 
 type TicketContextType = {
     tickets: GetTicket[]
     setTickets: (tickets: GetTicket[]) => void
-    selectedTicket: GetTicket | null
-    setSelectedTicket: (ticket: GetTicket | null) => void
+    selectedTicket: TicketDetails | null
+    // setSelectedTicket: (ticket: GetTicket | null) => void
+    selectTicket: (ticketId: number) => void
     updateTicket: (updatedTicket: GetTicket) => void
     activeTab: string
     setActiveTab: (tab: string) => void
@@ -25,19 +26,24 @@ interface TicketProviderProps {
 
 export const TicketProvider = ({ initialTickets, children }: TicketProviderProps) => {
     const [tickets, setTickets] = useState<GetTicket[]>(initialTickets)
-    const [selectedTicket, setSelectedTicket] = useState<GetTicket | null>(null)
+    const [selectedTicket, setSelectedTicket] = useState<TicketDetails | null>(null)
     const [activeTab, setActiveTab] = useState<string>("all")
 
     const updateTicket = useCallback((updated: GetTicket) => {
         setTickets((prev) =>
             prev.map((t) => (t.id === updated.id ? updated : t))
         )
-        setSelectedTicket(updated)
+        // setSelectedTicket(updated)
     }, [])
+
+    const selectTicket = async (ticketId: number) => {
+        const fullTicket = await getTicket(ticketId)
+        setSelectedTicket(fullTicket)
+    }
 
 
     return (
-        <TicketContext.Provider value={{ tickets, setTickets, selectedTicket, setSelectedTicket, updateTicket, activeTab, setActiveTab, }}>
+        <TicketContext.Provider value={{ tickets, setTickets, selectedTicket, selectTicket, updateTicket, activeTab, setActiveTab, }}>
             {children}
         </TicketContext.Provider>
     )

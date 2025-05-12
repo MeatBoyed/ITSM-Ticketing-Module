@@ -400,20 +400,20 @@ export function TicketDetails() {
                     Assigned Agent
                   </h3>
                   <div className="flex items-center">
-                    {/* <Avatar className="h-10 w-10 mr-3">
+                    <Avatar className="h-10 w-10 mr-3">
                       <AvatarImage
-                        src={ticket.assignedAgent.avatar || "/placeholder.svg"}
-                        alt={ticket.assignedAgent.name}
+                        src={ticket.agent?.avatar || "/placeholder.svg"}
+                        alt={ticket.agent?.name}
                       />
-                      <AvatarFallback>{ticket.assignedAgent.name.charAt(0)}</AvatarFallback>
-                    </Avatar> */}
-                    {/* <div>
-                      <p className="font-medium">{ticket.assignedAgent.name}</p>
-                      <p className="text-xs text-gray-500">{ticket.assignedAgent.role}</p>
-                    </div> */}
-                    {/* <Button variant="ghost" size="sm" className="ml-auto" onClick={() => setIsReassignDialogOpen(true)}>
+                      <AvatarFallback>{ticket.agent?.name.charAt(0)}</AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <p className="font-medium">{ticket.agent?.name}</p>
+                      <p className="text-xs text-gray-500">{ticket.agent?.role}</p>
+                    </div>
+                    <Button variant="ghost" size="sm" className="ml-auto" onClick={() => setIsReassignDialogOpen(true)}>
                       Reassign
-                    </Button> */}
+                    </Button>
                   </div>
                 </div>
               </div>
@@ -426,29 +426,29 @@ export function TicketDetails() {
                     <Tool size={16} className="mr-2 text-gray-500" />
                     Assigned Technician
                   </h3>
-                  {ticket.assignedTechnician ? (
+                  {ticket.technician ? (
                     <div className="flex items-center">
                       <Avatar className="h-10 w-10 mr-3">
                         <AvatarImage
-                          src={ticket.assignedTechnician.avatar || "/placeholder.svg"}
-                          alt={ticket.assignedTechnician.name}
+                          src={ticket.technician.avatar || "/placeholder.svg"}
+                          alt={ticket.technician.name}
                         />
-                        <AvatarFallback>{ticket.assignedTechnician.name.charAt(0)}</AvatarFallback>
+                        <AvatarFallback>{ticket.technician.name.charAt(0)}</AvatarFallback>
                       </Avatar>
                       <div>
-                        <p className="font-medium">{ticket.assignedTechnician.name}</p>
-                        <p className="text-xs text-gray-500">{ticket.assignedTechnician.specialization}</p>
+                        <p className="font-medium">{ticket.technician.name}</p>
+                        <p className="text-xs text-gray-500">{ticket.technician.role}</p>
                       </div>
-                      <Badge
-                        className={`ml-auto ${ticket.assignedTechnician.availability === "Available"
+                      {/* <Badge
+                        className={`ml-auto ${ticket.technician.availability === "Available"
                           ? "bg-green-100 text-green-800"
-                          : ticket.assignedTechnician.availability === "Busy"
+                          : ticket.technician.availability === "Busy"
                             ? "bg-orange-100 text-orange-800"
                             : "bg-red-100 text-red-800"
                           }`}
                       >
-                        {ticket.assignedTechnician.availability}
-                      </Badge>
+                        {ticket.technician.availability}
+                      </Badge> */}
                     </div>
                   ) : (
                     <div className="flex items-center justify-between">
@@ -472,18 +472,18 @@ export function TicketDetails() {
                       <AvatarFallback>{ticket.customer.name.charAt(0)}</AvatarFallback>
                     </Avatar> */}
                     <div>
-                      {/* <p className="font-medium">{ticket.customer.name}</p>
-                      <p className="text-xs text-gray-500">{ticket.customer.email}</p> */}
+                      <p className="font-medium">{ticket.customers.name}</p>
+                      <p className="text-xs text-gray-500">{ticket.customers.email}</p>
                     </div>
                   </div>
                   <div className="space-y-2 text-sm">
                     <div className="flex items-center">
                       <Mail size={14} className="mr-2 text-gray-500" />
-                      {/* <span>{ticket.customer.email}</span> */}
+                      <span>{ticket.customers.email}</span>
                     </div>
                     <div className="flex items-center">
                       <Phone size={14} className="mr-2 text-gray-500" />
-                      {/* <span>{ticket.customer.phone}</span> */}
+                      <span>{ticket.customers.phone}</span>
                     </div>
                   </div>
                   <div className="mt-3">
@@ -530,24 +530,24 @@ export function TicketDetails() {
           </TabsContent>
 
           <TabsContent value="activity" className="flex-1 overflow-auto p-6 space-y-6">
-            {/* <AddActivityForm onAddActivity={handleAddActivity} userRole={currentUserRole} />
-            <TicketActivity activities={ticket.activities || []} /> */}
+            {/* <AddActivityForm onAddActivity={handleAddActivity} userRole={currentUserRole} /> */}
+            <TicketActivity activities={ticket.activities || []} />
           </TabsContent>
 
           <TabsContent value="customer" className="flex-1 overflow-auto p-6">
             <div className="space-y-6">
               <div className="bg-gray-50 rounded-lg p-6">
-                {/* <div className="flex items-center mb-4">
+                <div className="flex items-center mb-4">
                   <Avatar className="h-16 w-16 mr-4">
-                    <AvatarImage src="/placeholder.svg" alt={ticket.customer.name} />
-                    <AvatarFallback>{ticket.customer.name.charAt(0)}</AvatarFallback>
+                    <AvatarImage src="/placeholder.svg" alt={ticket.customers.name} />
+                    <AvatarFallback>{ticket.customers.name.charAt(0)}</AvatarFallback>
                   </Avatar>
                   <div>
-                    <h3 className="text-xl font-semibold">{ticket.customer.name}</h3>
-                    <p className="text-gray-500">{ticket.customer.email}</p>
-                    <p className="text-gray-500">{ticket.customer.phone}</p>
+                    <h3 className="text-xl font-semibold">{ticket.customers.name}</h3>
+                    <p className="text-gray-500">{ticket.customers.email}</p>
+                    <p className="text-gray-500">{ticket.customers.phone}</p>
                   </div>
-                </div> */}
+                </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
                   <Button className="flex items-center justify-center gap-2">
                     <Mail size={16} />

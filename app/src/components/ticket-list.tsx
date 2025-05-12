@@ -15,7 +15,7 @@ import { GetTicket } from "@/lib/TicketService"
 interface TicketListProps {
   tickets: GetTicket[]
   selectedTicketId?: number
-  onSelectTicket: (ticket: GetTicket) => void
+  onSelectTicket: (ticketId: number) => void
 }
 
 export function TicketList({ tickets, selectedTicketId, onSelectTicket }: TicketListProps) {
@@ -68,7 +68,7 @@ export function TicketList({ tickets, selectedTicketId, onSelectTicket }: Ticket
                     : "bg-white hover:bg-gray-50 border-gray-100"
                   }
                 `}
-                onClick={() => onSelectTicket(ticket)}
+                onClick={() => onSelectTicket(ticket.id)}
               >
                 <div className="flex justify-between items-start gap-2">
                   <div className="min-w-0 flex-1">

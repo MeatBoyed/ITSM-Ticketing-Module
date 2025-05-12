@@ -58,19 +58,39 @@ import { Prisma } from "@/generated/prisma"
 //         throw errorHandler(error)
 //     }
 // }
-// export async function getTicket(ticketId: string) {
-//     try {
-//         const ticketRaw = await prisma?.tickets.findFirstOrThrow({ where: { id: ticketId } })
-//         // const ticket: Ticket = {
-//         //     ...ticketRaw,
-//         //     client_online: ticketRaw.client_online as "Online" | "Offline",
-//         //     monthly_revenue: Number(ticketRaw.monthly_revenue)
-//         // }
-//         return ticketRaw
-//     } catch (error) {
-//         throw errorHandler(error)
-//     }
-// }
+
+export type TicketDetails = GetTicket & {
+    agent: Prisma.usersGetPayload<{}> | null,
+    technician: Prisma.usersGetPayload<{}> | null,
+}
+export async function getTicket(ticketId: number): Promise<TicketDetails> {
+    try {
+        const ticket = await prisma.tickets.findUnique({
+            where: { id: ticketId },
+            include: {
+                customers: true,
+                activities: true,
+            },
+        })
+        if (ticket === null) {
+            throw new Error("Ticket not found")
+        }
+        const agent = await prisma.users.findUnique({
+            where: { id: ticket?.assigned_agent_id || undefined, role: "AGENT" },
+        })
+        const technician = await prisma.users.findUnique({
+            where: { id: ticket?.assigned_technician_id || undefined },
+        })
+        return {
+            ...ticket,
+            agent: agent || null,
+            technician: technician || null,
+        }
+    } catch (error) {
+        throw errorHandler(error)
+    }
+}
+
 export type GetTicket = (Prisma.ticketsGetPayload<{}> & { customers: Prisma.customersGetPayload<{}>, activities: Prisma.activitiesGetPayload<{}>[] })
 export async function getTickets(): Promise<GetTicket[]> {
     try {

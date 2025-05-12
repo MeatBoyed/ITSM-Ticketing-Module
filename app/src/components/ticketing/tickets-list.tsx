@@ -5,7 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 
 
 export function TicketsList() {
-    const { tickets, selectedTicket, setSelectedTicket, activeTab, setActiveTab, } = useTicketContext();
+    const { tickets, selectedTicket, selectTicket, activeTab, setActiveTab, } = useTicketContext();
 
     // const ticketCounts = useCallback(() => {
     //     return {
@@ -115,7 +115,7 @@ export function TicketsList() {
                     <TicketList
                         tickets={getFilteredTickets()}
                         selectedTicketId={selectedTicket?.id}
-                        onSelectTicket={setSelectedTicket}
+                        onSelectTicket={selectTicket}
                     />
                 </TabsContent>
 
@@ -123,7 +123,7 @@ export function TicketsList() {
                     <TicketList
                         tickets={getFilteredTickets()}
                         selectedTicketId={selectedTicket?.id}
-                        onSelectTicket={setSelectedTicket}
+                        onSelectTicket={selectTicket}
                     />
                 </TabsContent>
 
@@ -131,7 +131,7 @@ export function TicketsList() {
                     <TicketList
                         tickets={getFilteredTickets()}
                         selectedTicketId={selectedTicket?.id}
-                        onSelectTicket={setSelectedTicket}
+                        onSelectTicket={selectTicket}
                     />
                 </TabsContent>
 
@@ -139,7 +139,7 @@ export function TicketsList() {
                     <TicketList
                         tickets={getFilteredTickets()}
                         selectedTicketId={selectedTicket?.id}
-                        onSelectTicket={setSelectedTicket}
+                        onSelectTicket={selectTicket}
                     />
                 </TabsContent>
             </Tabs>

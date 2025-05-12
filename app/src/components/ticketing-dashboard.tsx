@@ -12,7 +12,7 @@ import { useTicketContext } from "@/contexts/TicketContext"
 import { TicketsList } from "./ticketing/tickets-list"
 
 export function TicketingDashboard() {
-  const { tickets, setTickets, selectedTicket, setSelectedTicket, updateTicket, activeTab, setActiveTab } = useTicketContext()
+  const { tickets, selectedTicket, } = useTicketContext()
 
   // Count tickets by status
 
