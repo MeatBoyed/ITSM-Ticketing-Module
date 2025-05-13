@@ -1,5 +1,6 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Badge } from "@/components/ui/badge"
+// import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+// import { useTicketContext } from "@/contexts/TicketContext"
+import { activities } from "@prisma/client"
 import { formatDate } from "@/lib/utils"
 import {
   AlertTriangle,
@@ -12,24 +13,24 @@ import {
   Wrench,
 } from "lucide-react"
 
-interface ActivityUser {
-  id: string
-  name: string
-  avatar: string
-  role: "Agent" | "Technician" | "Manager" | "Customer" | "System"
-}
+// interface ActivityUser {
+//   id: string
+//   name: string
+//   avatar: string
+//   role: "Agent" | "Technician" | "Manager" | "Customer" | "System"
+// }
 
-interface Activity {
-  id: string
-  type: "status_change" | "comment" | "assignment" | "escalation" | "creation" | "technician_assignment" | "work_log"
-  createdAt: string
-  description: string
-  note?: string
-  user: ActivityUser
-}
+// interface Activity {
+//   id: string
+//   type: "status_change" | "comment" | "assignment" | "escalation" | "creation" | "technician_assignment" | "work_log"
+//   createdAt: string
+//   description: string
+//   note?: string
+//   user: ActivityUser
+// }
 
 interface TicketActivityProps {
-  activities: Activity[]
+  activities: activities[]
 }
 
 export function TicketActivity({ activities }: TicketActivityProps) {
@@ -44,7 +45,7 @@ export function TicketActivity({ activities }: TicketActivityProps) {
 
   // Sort activities by date (newest first)
   const sortedActivities = [...activities].sort(
-    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+    (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
   )
 
   const getActivityIcon = (type: string) => {
@@ -68,36 +69,36 @@ export function TicketActivity({ activities }: TicketActivityProps) {
     }
   }
 
-  const getRoleBadge = (role: string) => {
-    switch (role) {
-      case "Agent":
-        return (
-          <Badge variant="outline" className="text-xs ml-1 bg-purple-50 text-purple-700 border-purple-200">
-            Agent
-          </Badge>
-        )
-      case "Technician":
-        return (
-          <Badge variant="outline" className="text-xs ml-1 bg-cyan-50 text-cyan-700 border-cyan-200">
-            Technician
-          </Badge>
-        )
-      case "Manager":
-        return (
-          <Badge variant="outline" className="text-xs ml-1 bg-amber-50 text-amber-700 border-amber-200">
-            Manager
-          </Badge>
-        )
-      case "Customer":
-        return (
-          <Badge variant="outline" className="text-xs ml-1 bg-blue-50 text-blue-700 border-blue-200">
-            Customer
-          </Badge>
-        )
-      default:
-        return null
-    }
-  }
+  // const getRoleBadge = (role: string) => {
+  //   switch (role) {
+  //     case "Agent":
+  //       return (
+  //         <Badge variant="outline" className="text-xs ml-1 bg-purple-50 text-purple-700 border-purple-200">
+  //           Agent
+  //         </Badge>
+  //       )
+  //     case "Technician":
+  //       return (
+  //         <Badge variant="outline" className="text-xs ml-1 bg-cyan-50 text-cyan-700 border-cyan-200">
+  //           Technician
+  //         </Badge>
+  //       )
+  //     case "Manager":
+  //       return (
+  //         <Badge variant="outline" className="text-xs ml-1 bg-amber-50 text-amber-700 border-amber-200">
+  //           Manager
+  //         </Badge>
+  //       )
+  //     case "Customer":
+  //       return (
+  //         <Badge variant="outline" className="text-xs ml-1 bg-blue-50 text-blue-700 border-blue-200">
+  //           Customer
+  //         </Badge>
+  //       )
+  //     default:
+  //       return null
+  //   }
+  // }
 
   return (
     <div className="space-y-4">
@@ -106,13 +107,13 @@ export function TicketActivity({ activities }: TicketActivityProps) {
           <div className="flex-shrink-0 mt-1">{getActivityIcon(activity.type)}</div>
           <div className="flex-1 bg-gray-50 rounded-lg p-3">
             <div className="flex items-center gap-2 mb-1">
-              <Avatar className="h-6 w-6">
-                <AvatarImage src={activity.user.avatar || "/placeholder.svg"} alt={activity.user.name} />
+              {/* <Avatar className="h-6 w-6">
+                <AvatarImage src={activity.user_id.avatar || "/placeholder.svg"} alt={activity.user.name} />
                 <AvatarFallback>{activity.user.name.charAt(0)}</AvatarFallback>
-              </Avatar>
-              <span className="font-medium text-sm">{activity.user.name}</span>
-              {getRoleBadge(activity.user.role)}
-              <span className="text-gray-500 text-xs ml-auto">{formatDate(activity.createdAt)}</span>
+              </Avatar> */}
+              {/* <span className="font-medium text-sm">{activity.user.name}</span> */}
+              {/* {getRoleBadge(activity.user.role)} */}
+              <span className="text-gray-500 text-xs ml-auto">{formatDate(activity.created_at.toLocaleTimeString())}</span>
             </div>
             <p className="text-sm">{activity.description}</p>
             {activity.note && (

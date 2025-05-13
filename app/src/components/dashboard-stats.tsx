@@ -1,29 +1,30 @@
 import { Card, CardContent } from "@/components/ui/card"
 import { Clock, AlertTriangle, CheckCircle, BarChart3 } from "lucide-react"
-import type { Ticket } from "@/types/ticket"
 import { useTicketContext } from "@/contexts/TicketContext"
 
-interface DashboardStatsProps {
-  tickets: Ticket[]
-}
+// interface DashboardStatsProps {
+//   tickets: Ticket[]
+// }
 
 export function DashboardStats() {
   const { tickets } = useTicketContext()
   // Calculate stats
-  const openTickets = tickets.filter((t) => t.status === "IN_PROGRESS").length
-  const urgentTickets = tickets.filter((t) => t.priority === "URGENT").length
+  const openTickets = tickets.filter((t) => t?.status === "IN_PROGRESS").length
+  const urgentTickets = tickets.filter((t) => t?.priority === "URGENT").length
   const resolvedToday = tickets.filter((t) => {
+    if (!t) return false
     const today = new Date().toISOString().split("T")[0]
     const ticketDate = new Date(t.updated_at).toISOString().split("T")[0]
-    return t.status === "CLOSED" && ticketDate === today
+    return t?.status === "CLOSED" && ticketDate === today
   }).length
 
   // Calculate average resolution time (in hours) for resolved tickets
-  const resolvedTickets = tickets.filter((t) => t.status === "IN_PROGRESS" || t.status === "CLOSED")
+  const resolvedTickets = tickets.filter((t) => t?.status === "IN_PROGRESS" || t?.status === "CLOSED")
   let avgResolutionTime = 0
 
   if (resolvedTickets.length > 0) {
     const totalHours = resolvedTickets.reduce((total, ticket) => {
+      if (!ticket) return 0
       const created = new Date(ticket.created_at).getTime()
       const updated = new Date(ticket.updated_at).getTime()
       return total + (updated - created) / (1000 * 60 * 60) // Convert ms to hours

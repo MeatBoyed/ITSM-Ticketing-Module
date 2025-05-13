@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client"
 
 import { useState } from "react"
@@ -5,14 +6,14 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog"
+// import {
+//   Dialog,
+//   DialogContent,
+//   DialogDescription,
+//   DialogFooter,
+//   DialogHeader,
+//   DialogTitle,
+// } from "@/components/ui/dialog"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,7 +22,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Textarea } from "@/components/ui/textarea"
+// import { Textarea } from "@/components/ui/textarea"
 // import type { Ticket, TicketStatus } from "@/types/ticket"
 import { formatDate, formatDistanceToNow } from "@/lib/utils"
 import { getStatusColor, getPriorityColor } from "@/lib/colors"
@@ -33,10 +34,10 @@ import {
   AlertTriangle,
   CheckCircle,
   MoreHorizontal,
-  PauseCircle,
+  // PauseCircle,
   PlayCircle,
   RefreshCw,
-  XCircle,
+  // XCircle,
   Mail,
   Phone,
   FileText,
@@ -45,24 +46,24 @@ import {
   PenToolIcon as Tool,
 } from "lucide-react"
 import { TicketActivity } from "@/components/ticket-activity"
-import { EscalateTicketDialog } from "@/components/dialogs/escalate-ticket-dialog"
-import { ReassignTicketDialog } from "@/components/dialogs/reassign-ticket-dialog"
-import { AssignTechnicianDialog } from "@/components/dialogs/assign-technician-dialog"
+// import { EscalateTicketDialog } from "@/components/dialogs/escalate-ticket-dialog"
+// import { ReassignTicketDialog } from "@/components/dialogs/reassign-ticket-dialog"
+// import { AssignTechnicianDialog } from "@/components/dialogs/assign-technician-dialog"
 import { AddActivityForm } from "@/components/add-activity-form"
-import { agents } from "../../../data/agents"
-import { technicians } from "../../../data/technicians"
-import { Activity, ActivityUser, Ticket, TicketStatus } from "../../types/ticket"
+// import { agents } from "../../../data/agents"
+// import { technicians } from "../../../data/technicians"
+// import { Activity, ActivityUser, Ticket, TicketStatus } from "../../types/ticket"
 import { useTicketContext } from "@/contexts/TicketContext"
-import { activity_type, ticket_status, user_role } from "@/generated/prisma"
+// import { activity_type, ticket_status, user_role } from "../../generated/prisma"
 
 export function TicketDetails() {
   const {
     selectedTicket: ticket,
-    updateTicket,
   } = useTicketContext()
 
+
   const [isResolveDialogOpen, setIsResolveDialogOpen] = useState(false)
-  const [resolutionNote, setResolutionNote] = useState("")
+  // const [resolutionNote, setResolutionNote] = useState("")
   const [isEscalateDialogOpen, setIsEscalateDialogOpen] = useState(false)
   const [isReassignDialogOpen, setIsReassignDialogOpen] = useState(false)
   const [isAssignTechnicianDialogOpen, setIsAssignTechnicianDialogOpen] = useState(false)

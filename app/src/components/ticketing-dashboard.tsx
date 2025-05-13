@@ -1,18 +1,12 @@
 "use client"
 
-import { useState } from "react"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { TicketList } from "@/components/ticket-list"
 import { TicketDetails } from "@/components/ticketing/ticket-details"
-import { DashboardHeader } from "@/components/dashboard-header"
 import { DashboardStats } from "@/components/dashboard-stats"
-import { dummyTickets } from "../../data/dummy-tickets"
-import type { Ticket } from "../types/ticket"
 import { useTicketContext } from "@/contexts/TicketContext"
 import { TicketsList } from "./ticketing/tickets-list"
 
 export function TicketingDashboard() {
-  const { tickets, selectedTicket, } = useTicketContext()
+  const { selectedTicket, } = useTicketContext()
 
   // Count tickets by status
 

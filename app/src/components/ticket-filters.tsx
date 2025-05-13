@@ -19,7 +19,7 @@ interface TicketFiltersProps {
     priority: string
     agent: string
   }
-  setFilters: (filters: any) => void
+  setFilters: (filters: { priority: string; status: string; agent: string; }) => void
 }
 
 export function TicketFilters({ tickets, filters, setFilters }: TicketFiltersProps) {

@@ -1,10 +1,10 @@
 "use client"
 
-import { createContext, useContext, useState, useCallback, ReactNode } from "react"
-import { Ticket } from "@/types/ticket"
-import { dummyTickets } from "../../data/dummy-tickets"
-import { tickets } from "@/generated/prisma"
-import { getTicket, GetTicket, TicketDetails } from "@/lib/TicketService"
+import { createContext, useContext, useState, useCallback, } from "react"
+// import { Ticket } from "@/types/ticket"
+// import { dummyTickets } from "../../data/dummy-tickets"
+// import { tickets } from "../generated/prisma"
+import { getTicket, GetTicket, } from "@/lib/TicketService"
 
 type TicketContextType = {
     tickets: GetTicket[]
@@ -34,6 +34,7 @@ export const TicketProvider = ({ initialTickets, children }: TicketProviderProps
         //     prev.map((t) => (t.id === updated.id ? updated : t))
         // )
         // setSelectedTicket(updated)
+        console.log(updated)
     }, [])
 
     const selectTicket = async (ticketId: number) => {

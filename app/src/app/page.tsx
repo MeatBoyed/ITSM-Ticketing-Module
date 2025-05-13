@@ -1,6 +1,5 @@
 import { TicketingDashboard } from "@/components/ticketing-dashboard"
 import { TicketProvider } from "@/contexts/TicketContext"
-import { dummyTickets } from "../../data/dummy-tickets"
 import { getTickets } from "@/lib/TicketService"
 
 export const dynamic = "force-dynamic"

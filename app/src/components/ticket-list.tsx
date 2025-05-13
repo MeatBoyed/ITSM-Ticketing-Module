@@ -8,7 +8,7 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { formatDistanceToNow } from "@/lib/utils"
 import { getStatusColor } from "@/lib/colors"
 import { Search, Filter } from "lucide-react"
-import type { Ticket } from "../types/ticket"
+// import type { Ticket } from "../types/ticket"
 import { useState } from "react"
 import { GetTicket } from "@/lib/TicketService"
 
@@ -23,9 +23,9 @@ export function TicketList({ tickets, selectedTicketId, onSelectTicket }: Ticket
 
   const filteredTickets = tickets.filter(
     (ticket) =>
-      ticket.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      ticket.id.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
-      ticket.customers.name.toLowerCase().includes(searchQuery.toLowerCase()),
+      ticket?.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      ticket?.id.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
+      ticket?.customers.name.toLowerCase().includes(searchQuery.toLowerCase()),
   )
 
   return (
@@ -60,33 +60,33 @@ export function TicketList({ tickets, selectedTicketId, onSelectTicket }: Ticket
           ) : (
             filteredTickets.map((ticket) => (
               <div
-                key={ticket.id}
+                key={ticket?.id}
                 className={`
                   p-3 rounded-lg border cursor-pointer transition-all
-                  ${selectedTicketId === ticket.id
+                  ${selectedTicketId === ticket?.id
                     ? "bg-primary/5 border-primary/30"
                     : "bg-white hover:bg-gray-50 border-gray-100"
                   }
                 `}
-                onClick={() => onSelectTicket(ticket.id)}
+                onClick={() => ticket && onSelectTicket(ticket.id)}
               >
                 <div className="flex justify-between items-start gap-2">
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-1 mb-1">
-                      <Badge variant="secondary" className={`${getStatusColor(ticket.status)} text-xs px-1.5 py-0`}>
-                        {ticket.status}
+                      <Badge variant="secondary" className={`${ticket && getStatusColor(ticket.status)} text-xs px-1.5 py-0`}>
+                        {ticket?.status}
                       </Badge>
-                      {ticket.priority === "URGENT" && (
+                      {ticket?.priority === "URGENT" && (
                         <Badge variant="outline" className="bg-red-50 text-red-700 border-red-200 text-xs px-1.5 py-0">
                           Urgent
                         </Badge>
                       )}
                     </div>
-                    <h3 className="font-medium text-sm truncate">{ticket.title}</h3>
+                    <h3 className="font-medium text-sm truncate">{ticket?.title}</h3>
                     <div className="flex items-center mt-1 text-xs text-gray-500">
-                      <span className="truncate">{ticket.id}</span>
+                      <span className="truncate">{ticket?.id}</span>
                       <span className="mx-1">•</span>
-                      <span>{formatDistanceToNow(ticket.created_at.toLocaleDateString())}</span>
+                      <span>{ticket && formatDistanceToNow(ticket.created_at.toLocaleDateString())}</span>
                     </div>
                   </div>
                   {/* <Avatar className="h-8 w-8 flex-shrink-0">
@@ -99,10 +99,10 @@ export function TicketList({ tickets, selectedTicketId, onSelectTicket }: Ticket
                 </div>
                 <div className="mt-2 flex items-center text-xs">
                   <Avatar className="h-5 w-5 mr-1">
-                    <AvatarImage src="/placeholder.svg?height=20&width=20" alt={ticket.customers.name} />
-                    <AvatarFallback>{ticket.customers.name.charAt(0)}</AvatarFallback>
+                    <AvatarImage src="/placeholder.svg?height=20&width=20" alt={ticket?.customers.name} />
+                    <AvatarFallback>{ticket?.customers.name.charAt(0)}</AvatarFallback>
                   </Avatar>
-                  <span className="text-gray-600 truncate">{ticket.customers.name}</span>
+                  <span className="text-gray-600 truncate">{ticket?.customers.name}</span>
                 </div>
               </div>
             ))

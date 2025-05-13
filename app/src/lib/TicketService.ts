@@ -1,7 +1,7 @@
 "use server"
 import prisma from "@/lib/prisma"
 import { errorHandler } from "@/lib/errors"
-import { Prisma } from "@/generated/prisma"
+import { Prisma } from "@prisma/client"
 
 // Form uses Schema to already validate input
 // export async function createTicket(ticket: TicketForm) {
@@ -59,10 +59,10 @@ import { Prisma } from "@/generated/prisma"
 //     }
 // }
 
-export type TicketDetails = GetTicket & {
-    agent: Prisma.usersGetPayload<{}> | null,
-    technician: Prisma.usersGetPayload<{}> | null,
-}
+// export type TicketDetails = GetTicket & {
+//     agent: Prisma.usersGetPayload<{ include: }> | null,
+//     technician: Prisma.usersGetPayload<{}> | null,
+// }
 // export async function getTicket(ticketId: number): Promise<TicketDetails> {
 export async function getTicket(ticketId: number) {
     try {
@@ -95,7 +95,14 @@ export async function getTicket(ticketId: number) {
     }
 }
 
-export type GetTicket = (Prisma.ticketsGetPayload<{}> & { customers: Prisma.customersGetPayload<{}>, activities: Prisma.activitiesGetPayload<{}>[], users_tickets_assigned_agent_idTousers: Prisma.usersGetPayload<{}> | null, users_tickets_assigned_technician_idTousers: Prisma.usersGetPayload<{}> | null }) | null
+// export type GetTicket = (Prisma.ticketsGetPayload<{}> &
+// {
+//     customers: Prisma.customersGetPayload<{}>,
+//     activities: Prisma.activitiesGetPayload<{}>[],
+//     users_tickets_assigned_agent_idTousers: Prisma.usersGetPayload<any> | null,
+//     users_tickets_assigned_technician_idTousers: Prisma.usersGetPayload<any> | null
+// }) | null
+export type GetTicket = Prisma.ticketsGetPayload<{ include: { customers: true; activities: true; users_tickets_assigned_agent_idTousers: true; users_tickets_assigned_technician_idTousers: true; } }> | null
 export async function getTickets(): Promise<GetTicket[]> {
     try {
         return await prisma?.tickets.findMany({
