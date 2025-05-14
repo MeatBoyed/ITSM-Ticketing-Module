@@ -364,10 +364,10 @@ export function TicketDetails() {
                       <span className="text-gray-500">Created:</span>
                       <span className="font-medium">{formatDate(ticket.created_at.toLocaleDateString())}</span>
                     </div>
-                    <div className="flex justify-between">
+                    {/* <div className="flex justify-between">
                       <span className="text-gray-500">Updated:</span>
                       <span className="font-medium">{formatDate(ticket.updated_at.toLocaleDateString())}</span>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
 
