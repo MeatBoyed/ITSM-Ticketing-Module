@@ -1,0 +1,27 @@
+version: "3.8"
+
+services:
+  nextjs-app:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: nextjs-ticketing
+    restart: unless-stopped
+    expose:
+      - "3000"
+    ports:
+      - "3000:3000" # You can also bind this to localhost only: 127.0.0.1:3000:3000
+    environment:
+      - NODE_ENV=production
+    networks:
+      - default
+      - public-proxy
+        #labels:
+      # For Nginx Proxy Manager (NPM) Auto Discovery (optional)
+      #- "traefik.enable=false"
+
+networks:
+  default:
+    name: nextjs-ticketing-default
+  public-proxy:
+    external: true
