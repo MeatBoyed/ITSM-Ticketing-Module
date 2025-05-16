@@ -18,6 +18,8 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ message: 'Missing sender info' }, { status: 400 });
         }
 
+        // Generate Case Number & Message Template
+
         // 1. Find or create the customer
         let customer = await prisma.customers.findUnique({
             where: { email: sender.email }
@@ -45,9 +47,13 @@ export async function POST(req: NextRequest) {
                 category: 'Chatwoot',
                 team: 'Customer Care', // Optional: Match your team logic
                 customer_id: customer.id,
+
             }
         });
         console.log("Ticket created:", ticket);
+
+
+        const payload = {}
 
         return NextResponse.json({ message: 'Ticket created successfully' }, { status: 201 });
     } catch (err) {
