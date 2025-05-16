@@ -86,7 +86,7 @@ export function TicketList({ tickets, selectedTicketId, onSelectTicket }: Ticket
                     <div className="flex items-center mt-1 text-xs text-gray-500">
                       <span className="truncate">{ticket?.id}</span>
                       <span className="mx-1">•</span>
-                      <span>{ticket && formatDistanceToNow(ticket.created_at.toLocaleDateString())}</span>
+                      {/* <span>{ticket && formatDistanceToNow(ticket.created_at.toLocaleDateString())}</span> */}
                     </div>
                   </div>
                   {/* <Avatar className="h-8 w-8 flex-shrink-0">

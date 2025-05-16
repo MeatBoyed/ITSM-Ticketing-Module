@@ -1,6 +1,5 @@
 generator client {
   provider = "prisma-client-js"
-  // output   = "../src/generated/prisma"
 }
 
 datasource db {
@@ -62,6 +61,7 @@ model tickets {
   location_province                           String?
   location_country                            String?
   sla_due_at                                  DateTime?       @db.Timestamptz(6)
+  case_number                                 String?         @unique
   activities                                  activities[]
   users_tickets_assigned_agent_idTousers      users?          @relation("tickets_assigned_agent_idTousers", fields: [assigned_agent_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   users_tickets_assigned_technician_idTousers users?          @relation("tickets_assigned_technician_idTousers", fields: [assigned_technician_id], references: [id], onDelete: NoAction, onUpdate: NoAction)

@@ -264,7 +264,8 @@ export function TicketDetails() {
             <h2 className="text-xl font-semibold">{ticket.title}</h2>
             <div className="flex items-center mt-1 text-sm text-gray-500">
               <Clock size={14} className="mr-1" />
-              <span>Created {formatDistanceToNow(ticket.created_at.toLocaleDateString())} ago</span>
+              {/* <span>Created {formatDistanceToNow(ticket.created_at.toLocaleDateString())} ago</span> */}
+              <span>{ticket.created_at.toLocaleDateString()}</span>
             </div>
           </div>
           <div className="flex space-x-2">
@@ -362,7 +363,8 @@ export function TicketDetails() {
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-500">Created:</span>
-                      <span className="font-medium">{formatDate(ticket.created_at.toLocaleDateString())}</span>
+                      {/* <span className="font-medium">{formatDate(ticket.created_at.toLocaleDateString())}</span> */}
+                      <span className="font-medium">{ticket.created_at.toLocaleDateString()}</span>
                     </div>
                     {/* <div className="flex justify-between">
                       <span className="text-gray-500">Updated:</span>
@@ -372,85 +374,30 @@ export function TicketDetails() {
                 </div>
 
                 {/* Location Info */}
-                <div className="bg-gray-50 rounded-lg p-4">
-                  <h3 className="text-sm font-medium mb-3 flex items-center">
-                    <MapPin size={16} className="mr-2 text-gray-500" />
-                    Location
-                  </h3>
-                  <div className="space-y-3 text-sm">
-                    <div className="flex justify-between">
-                      <span className="text-gray-500">Name:</span>
-                      <span className="font-medium">{ticket.location_name}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-500">Address:</span>
-                      <span className="font-medium">{ticket.location_address}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-500">City:</span>
-                      <span className="font-medium">
-                        {ticket.location_city}, {ticket.location_province}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Assigned Agent */}
-                <div className="bg-gray-50 rounded-lg p-4">
-                  <h3 className="text-sm font-medium mb-3 flex items-center">
-                    <Users size={16} className="mr-2 text-gray-500" />
-                    Assigned Agent
-                  </h3>
-                  <div className="flex items-center">
-                    <Avatar className="h-10 w-10 mr-3">
-                      <AvatarImage
-                        src={ticket.users_tickets_assigned_agent_idTousers?.avatar || "/placeholder.svg"}
-                        alt={ticket.users_tickets_assigned_agent_idTousers?.name}
-                      />
-                      <AvatarFallback>{ticket.users_tickets_assigned_agent_idTousers?.name.charAt(0)}</AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <p className="font-medium">{ticket.users_tickets_assigned_agent_idTousers?.name}</p>
-                      <p className="text-xs text-gray-500">{ticket.users_tickets_assigned_agent_idTousers?.role}</p>
-                    </div>
-                    <Button variant="ghost" size="sm" className="ml-auto" onClick={() => setIsReassignDialogOpen(true)}>
-                      Reassign
-                    </Button>
-                  </div>
-                </div>
-              </div>
-
-              {/* Right Column */}
-              <div className="space-y-4">
-                {/* Assigned Technician */}
-                <div className="bg-gray-50 rounded-lg p-4">
-                  <h3 className="text-sm font-medium mb-3 flex items-center">
-                    <Tool size={16} className="mr-2 text-gray-500" />
-                    Assigned Technician
-                  </h3>
-                  {ticket.users_tickets_assigned_technician_idTousers ? (
-                    <div className="flex items-center">
-                      <Avatar className="h-10 w-10 mr-3">
-                        <AvatarImage
-                          src={ticket.users_tickets_assigned_technician_idTousers.avatar || "/placeholder.svg"}
-                          alt={ticket.users_tickets_assigned_technician_idTousers.name}
-                        />
-                        <AvatarFallback>{ticket.users_tickets_assigned_technician_idTousers.name.charAt(0)}</AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <p className="font-medium">{ticket.users_tickets_assigned_technician_idTousers.name}</p>
-                        <p className="text-xs text-gray-500">{ticket.users_tickets_assigned_technician_idTousers.role}</p>
+                {ticket.location_name && (
+                  <div className="bg-gray-50 rounded-lg p-4">
+                    <h3 className="text-sm font-medium mb-3 flex items-center">
+                      <MapPin size={16} className="mr-2 text-gray-500" />
+                      Location
+                    </h3>
+                    <div className="space-y-3 text-sm">
+                      <div className="flex justify-between">
+                        <span className="text-gray-500">Name:</span>
+                        <span className="font-medium">{ticket.location_name}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-500">Address:</span>
+                        <span className="font-medium">{ticket.location_address}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-500">City:</span>
+                        <span className="font-medium">
+                          {ticket.location_city}, {ticket.location_province}
+                        </span>
                       </div>
                     </div>
-                  ) : (
-                    <div className="flex items-center justify-between">
-                      <p className="text-gray-500">No technician assigned</p>
-                      <Button variant="outline" size="sm" onClick={() => setIsAssignTechnicianDialogOpen(true)}>
-                        Assign Technician
-                      </Button>
-                    </div>
-                  )}
-                </div>
+                  </div>
+                )}
 
                 {/* Customer Info */}
                 <div className="bg-gray-50 rounded-lg p-4">
@@ -486,6 +433,75 @@ export function TicketDetails() {
                   </div>
                 </div>
 
+              </div>
+
+              {/* Right Column */}
+              <div className="space-y-4">
+                {/* Assigned Agent */}
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <h3 className="text-sm font-medium mb-3 flex items-center">
+                    <Users size={16} className="mr-2 text-gray-500" />
+                    Assigned Agent
+                  </h3>
+                  {ticket.users_tickets_assigned_agent_idTousers ? (
+
+                    <div className="flex items-center">
+                      <Avatar className="h-10 w-10 mr-3">
+                        <AvatarImage
+                          src={ticket.users_tickets_assigned_agent_idTousers?.avatar || "/placeholder.svg"}
+                          alt={ticket.users_tickets_assigned_agent_idTousers?.name}
+                        />
+                        <AvatarFallback>{ticket.users_tickets_assigned_agent_idTousers?.name.charAt(0)}</AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <p className="font-medium">{ticket.users_tickets_assigned_agent_idTousers?.name}</p>
+                        <p className="text-xs text-gray-500">{ticket.users_tickets_assigned_agent_idTousers?.role}</p>
+                      </div>
+                      <Button variant="ghost" size="sm" className="ml-auto" onClick={() => setIsReassignDialogOpen(true)}>
+                        Reassign
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="flex items-center justify-between">
+                      <p className="text-gray-500">No technician assigned</p>
+                      <Button variant="outline" size="sm" onClick={() => setIsAssignTechnicianDialogOpen(true)}>
+                        Assign Agent
+                      </Button>
+                    </div>
+                  )}
+                </div>
+                {/* Assigned Technician */}
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <h3 className="text-sm font-medium mb-3 flex items-center">
+                    <Tool size={16} className="mr-2 text-gray-500" />
+                    Assigned Technician
+                  </h3>
+                  {ticket.users_tickets_assigned_technician_idTousers ? (
+                    <div className="flex items-center">
+                      <Avatar className="h-10 w-10 mr-3">
+                        <AvatarImage
+                          src={ticket.users_tickets_assigned_technician_idTousers.avatar || "/placeholder.svg"}
+                          alt={ticket.users_tickets_assigned_technician_idTousers.name}
+                        />
+                        <AvatarFallback>{ticket.users_tickets_assigned_technician_idTousers.name.charAt(0)}</AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <p className="font-medium">{ticket.users_tickets_assigned_technician_idTousers.name}</p>
+                        <p className="text-xs text-gray-500">{ticket.users_tickets_assigned_technician_idTousers.role}</p>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="flex items-center justify-between">
+                      <p className="text-gray-500">No technician assigned</p>
+                      <Button variant="outline" size="sm" onClick={() => setIsAssignTechnicianDialogOpen(true)}>
+                        Assign Technician
+                      </Button>
+                    </div>
+                  )}
+                </div>
+
+
+
                 {/* SLA Info */}
                 <div className="bg-gray-50 rounded-lg p-4">
                   <h3 className="text-sm font-medium mb-3 flex items-center">
@@ -505,7 +521,7 @@ export function TicketDetails() {
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-500">Time Elapsed:</span>
-                      <span className="font-medium">{formatDistanceToNow(ticket.created_at.toLocaleDateString())}</span>
+                      {/* <span className="font-medium">{formatDistanceToNow(ticket.created_at.toLocaleDateString())}</span> */}
                     </div>
                   </div>
                 </div>
@@ -513,12 +529,14 @@ export function TicketDetails() {
             </div>
 
             {/* Description */}
-            <div>
-              <h3 className="text-sm font-medium mb-3">Description</h3>
-              <div className="bg-gray-50 rounded-lg p-4">
-                <p className="text-sm whitespace-pre-line">{ticket.description}</p>
-              </div>
-            </div>
+            {/* {ticket.description && ( */}
+            {/* <div>
+                <h3 className="text-sm font-medium mb-3">Description</h3>
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <p className="text-sm whitespace-pre-line">{ticket.description}</p>
+                </div>
+              </div> */}
+            {/* )} */}
           </TabsContent>
 
           <TabsContent value="activity" className="flex-1 overflow-auto p-6 space-y-6">
