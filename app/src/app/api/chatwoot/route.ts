@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
         }
 
         const sender = body.meta?.sender;
-        const firstMessage = body.messages?.[0]?.content || 'New message from Chatwoot';
+        // const firstMessage = body.messages?.[0]?.content || 'New message from Chatwoot';
 
         if (!sender || !sender.email) {
             return NextResponse.json({ message: 'Missing sender info' }, { status: 400 });
@@ -53,7 +53,7 @@ export async function POST(req: NextRequest) {
         console.log("Ticket created:", ticket);
 
 
-        const payload = {}
+        // const payload = {}
 
         return NextResponse.json({ message: 'Ticket created successfully' }, { status: 201 });
     } catch (err) {
